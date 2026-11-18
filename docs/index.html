@@ -24,9 +24,9 @@ button{font:inherit;cursor:pointer}
 .btn{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:6px 12px}
 .btn:hover{background:#f0f2f5}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-.market{display:flex;gap:12px;padding:0 0 10px;flex-wrap:wrap}
-.mchip{background:#f0f4ff;border-radius:8px;padding:6px 10px;font-size:12.5px}
-.mchip b{font-size:13px}
+.market{display:flex;align-items:center;gap:18px;padding:0 0 12px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+.market b{color:var(--text)}
+.market .sep{width:1px;height:14px;background:var(--line)}
 .bar{display:flex;align-items:center;gap:8px;padding:8px 0;flex-wrap:wrap}
 .tab{border:none;background:none;padding:7px 12px;border-radius:999px;color:var(--muted);font-weight:600}
 .tab.on{background:var(--text);color:#fff}
@@ -55,7 +55,8 @@ main.wrap{padding-top:16px;padding-bottom:60px}
 .price .total small{font-size:13px;font-weight:600}
 .price .base{color:var(--muted);font-size:12px}
 .drop{color:var(--drop);font-weight:700;font-size:12.5px}
-.specs{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:2px 14px;font-size:13px}
+.specs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 10px;font-size:13px}
+.specs>div{min-width:0;overflow-wrap:anywhere}
 .specs span{color:var(--muted);font-size:11px;display:block}
 .meta{color:var(--muted);font-size:12px;line-height:1.5}
 .reasons{color:var(--near);font-size:12px;font-weight:600}
@@ -63,6 +64,13 @@ main.wrap{padding-top:16px;padding-bottom:60px}
 details{font-size:12px;color:var(--muted)}
 details table{border-collapse:collapse;margin-top:4px}
 details td{padding:1px 10px 1px 0}
+.memo{background:#fffbea;border:1px solid #f3e3a3;border-radius:8px;padding:6px 8px;font-size:12.5px;white-space:pre-wrap;cursor:pointer}
+.memo.emptymemo{background:none;border-style:dashed;border-color:var(--line);color:var(--muted)}
+.memo textarea{width:100%;min-height:64px;font:inherit;border:1px solid var(--line);border-radius:6px;padding:6px;resize:vertical}
+.memo .mrow{display:flex;gap:6px;justify-content:flex-end;margin-top:4px}
+.memo .mrow button{padding:3px 10px;font-size:12px}
+.foot{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:12px;margin-top:auto;padding-top:4px}
+.old{color:#b42318;font-weight:600}
 .empty{background:var(--panel);border:1px dashed var(--line);border-radius:12px;padding:48px;text-align:center;color:var(--muted)}
 dialog{border:none;border-radius:14px;padding:24px;width:520px;max-width:calc(100% - 32px);box-shadow:0 10px 40px rgba(0,0,0,.25)}
 dialog::backdrop{background:rgba(0,0,0,.35)}
@@ -98,11 +106,14 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
         <option value="MAZDA3">MAZDA3</option>
         <option value="CX-30">CX-30</option>
       </select>
+      <select id="pref"><option value="">全地域</option></select>
       <select id="sort">
         <option value="price">支払総額が安い順</option>
         <option value="new">新着順</option>
         <option value="km">走行距離が少ない順</option>
         <option value="year">年式が新しい順</option>
+        <option value="dist">自宅から近い順</option>
+        <option value="days">掲載が長い順</option>
       </select>
     </div>
   </div>
@@ -114,13 +125,16 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
 </main>
 
 <dialog id="settings">
-  <h2>設定（星の保存先）</h2>
+  <h2>設定</h2>
   <p class="help">星はGitHubのリポジトリ内の <code>docs/data/stars.json</code> に保存します。ブラウザのデータを消しても星は消えません（消えた場合はここにトークンを入れ直すだけで戻ります）。</p>
   <label for="repo">リポジトリ（ユーザー名/リポジトリ名）</label>
   <input id="repo" placeholder="例: yourname/car-alert">
   <label for="token">GitHub アクセストークン</label>
   <input id="token" type="password" placeholder="github_pat_...">
   <p class="help">このリポジトリだけに「Contents: Read and write」権限を与えた Fine-grained token を使ってください。トークンはこのパソコンのブラウザ内にだけ保存されます。</p>
+  <label for="home">自宅の都道府県（「自宅から近い順」と距離の表示に使います）</label>
+  <select id="home" style="width:100%"></select>
+  <p class="help">距離は県庁所在地どうしの直線距離の目安です。</p>
   <div class="row">
     <button class="btn" id="cancelSettings">閉じる</button>
     <button class="btn primary" id="saveSettings">保存して接続テスト</button>
@@ -153,6 +167,30 @@ const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&
 const fmtPrice = (v) => v == null ? "記載なし" : `${v.toFixed(1)}<small>万円</small>`;
 const fmtKm = (v) => v == null ? "-" : `${Math.round(v*10000).toLocaleString()}km`;
 const group = (c) => (c.model || "").startsWith("CX-30") ? "CX-30" : "MAZDA3";
+// 全角英数字・全角スペースを半角にそろえる（例：Ｗｅｓｔ　Ｖｉｌｌａｇｅ → West Village）
+const nz = (s) => String(s ?? "").normalize("NFKC");
+
+// 県庁所在地の緯度経度（自宅からの距離の目安に使う）
+const PREF_POS = {
+  "大阪府":[34.686,135.520], "兵庫県":[34.691,135.183], "京都府":[35.021,135.756], "滋賀県":[35.004,135.868],
+  "奈良県":[34.685,135.833], "和歌山県":[34.226,135.168], "三重県":[34.730,136.509], "福井県":[36.065,136.222],
+};
+const homePref = () => safeGet("home") || "";
+function distKm(c){
+  const a = PREF_POS[homePref()], b = PREF_POS[c.pref];
+  if (!a || !b) return null;
+  const R = 6371, rad = Math.PI/180;
+  const dLat = (b[0]-a[0])*rad, dLon = (b[1]-a[1])*rad;
+  const h = Math.sin(dLat/2)**2 + Math.cos(a[0]*rad)*Math.cos(b[0]*rad)*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.sqrt(h));
+}
+// このツールで初めて確認してからの日数（終了した車は終了日まで）
+function daysListed(c){
+  if (!c.first_seen) return null;
+  const end = c.status === "ended" && c.ended_on ? c.ended_on : (state.data?.updated_at || "").slice(0,10);
+  if (!end) return null;
+  return Math.max(0, Math.round((new Date(end) - new Date(c.first_seen)) / 86400000));
+}
 
 // ---------- GitHub API (stars) ----------
 async function gh(path, opts={}){
@@ -257,13 +295,14 @@ const TABS = [
 
 function render(){
   const cars = allCars();
-  const model = $("model").value;
+  const model = $("model").value, pref = $("pref").value;
+  const match = (c) => (!model || group(c) === model) && (!pref || c.pref === pref);
   $("tabs").innerHTML = TABS.map(([k,label,f]) => {
-    const n = cars.filter(c => f(c) && (!model || group(c) === model)).length;
+    const n = cars.filter(c => f(c) && match(c)).length;
     return `<button class="tab ${state.tab===k?"on":""}" data-tab="${k}">${label}<span class="n">${n}</span></button>`;
   }).join("");
   const filt = TABS.find(t => t[0] === state.tab)[2];
-  let list = cars.filter(c => filt(c) && (!model || group(c) === model));
+  let list = cars.filter(c => filt(c) && match(c));
   const sort = $("sort").value;
   const P = (c) => c.total_price ?? c.base_price ?? 9999;
   list.sort({
@@ -271,6 +310,8 @@ function render(){
     new: (a,b) => (b.first_seen||"").localeCompare(a.first_seen||"") || P(a) - P(b),
     km: (a,b) => (a.mileage??99) - (b.mileage??99),
     year: (a,b) => (b.year||0) - (a.year||0) || P(a) - P(b),
+    dist: (a,b) => (distKm(a) ?? 9999) - (distKm(b) ?? 9999) || P(a) - P(b),
+    days: (a,b) => (daysListed(b) ?? -1) - (daysListed(a) ?? -1) || P(a) - P(b),
   }[sort]);
 
   $("grid").innerHTML = list.length ? list.map(card).join("") :
@@ -302,34 +343,67 @@ function card(c){
     </a>
     <button class="starbtn ${starred?"on":""}" data-star="${esc(c.id)}" title="${starred?"星を外す":"星をつける"}" ${state.busy.has(c.id)?"disabled":""}>${starred?"★":"☆"}</button>
     <div class="body">
-      <div class="title"><a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(c.model)} ${esc(c.grade)}</a></div>
+      <div class="title"><a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(nz(c.model))} ${esc(nz(c.grade))}</a></div>
       <div class="price"><span class="total">${fmtPrice(c.total_price)}</span><span class="base">支払総額 ／ 本体 ${c.base_price==null?"-":c.base_price.toFixed(1)+"万円"}</span>
         ${drop ? `<span class="drop">▼${drop.amount.toFixed(1)}万円（${esc(drop.date.slice(5))}）</span>` : ""}</div>
       ${reasons}
       <div class="specs">
         <div><span>年式</span>${esc(c.year ?? "-")}年</div>
         <div><span>走行距離</span>${fmtKm(c.mileage)}</div>
-        <div><span>車検</span>${esc(c.inspection || "-")}</div>
-        <div><span>色</span>${esc(c.color || "-")}</div>
-        <div><span>ミッション</span>${esc((c.mission||"-").replace("フロア",""))}</div>
-        <div><span>保証</span>${esc(c.warranty || "-")}</div>
+        <div><span>車検</span>${esc(nz(c.inspection).replace(/\(R\d+\)/, "").replace(/年(\d+)月/, "/$1") || "-")}</div>
+        <div><span>色</span>${esc(nz(c.color) || "-")}</div>
+        <div><span>ミッション</span><span style="all:unset" title="${esc(nz(c.mission))}">${esc(nz(c.mission || "-").replace(/フロア|コラム|インパネ|MTモード付/g,"").trim() || "-")}</span></div>
+        <div><span>保証</span>${esc(nz(c.warranty) || "-")}</div>
       </div>
-      <div class="meta">${esc(c.pref)}${esc(c.city)}　${esc(c.shop)}</div>
-      <div class="catch">${esc(c.catch)}</div>
+      <div class="meta">${esc(c.pref)}${esc(nz(c.city))}　${esc(nz(c.shop))}</div>
+      <div class="catch">${esc(nz(c.catch))}</div>
+      ${starred ? memoHtml(c.id) : ""}
       ${endedNote}
       ${histHtml}
-      <div class="meta">初回掲載確認：${esc(c.first_seen || "-")}</div>
+      <div class="foot">${footHtml(c)}</div>
     </div>
   </article>`;
+}
+
+function footHtml(c){
+  const d = daysListed(c), km = distKm(c);
+  const dayTxt = d == null ? "" : `<span class="${d >= 30 ? "old" : ""}" title="このツールで初めて確認した日：${esc(c.first_seen)}">掲載確認から${d}日${d >= 30 ? "（長期）" : ""}</span>`;
+  const kmTxt = km == null ? (homePref() ? "" : `<span>⚙設定で自宅を登録すると距離を表示</span>`)
+    : `<span title="県庁所在地どうしの直線距離の目安">${c.pref === homePref() ? "自宅と同じ府県" : `自宅から約${Math.max(10, Math.round(km/10)*10)}km`}</span>`;
+  return dayTxt + kmTxt;
+}
+
+// ---------- memo ----------
+const editing = new Set();
+function memoHtml(id){
+  const memo = state.stars[id]?.memo || "";
+  if (editing.has(id)) return `<div class="memo" data-memo-box="${esc(id)}">
+    <textarea data-memo-input="${esc(id)}" placeholder="例：試乗予約 12/1 10時、タイヤの溝を確認">${esc(memo)}</textarea>
+    <div class="mrow"><button class="btn" data-memo-cancel="${esc(id)}">キャンセル</button><button class="btn primary" data-memo-save="${esc(id)}" ${state.busy.has(id)?"disabled":""}>保存</button></div></div>`;
+  return memo ? `<div class="memo" data-memo-edit="${esc(id)}" title="クリックして編集">📝 ${esc(memo)}</div>`
+              : `<div class="memo emptymemo" data-memo-edit="${esc(id)}">＋ メモを追加</div>`;
+}
+async function saveMemo(id){
+  const text = (document.querySelector(`[data-memo-input="${CSS.escape(id)}"]`)?.value || "").trim();
+  state.busy.add(id); render();
+  try {
+    await saveStars(`📝 ${state.data.cars[id]?.model || id}`, (s) => { if (s[id]) { if (text) s[id].memo = text; else delete s[id].memo; } });
+    editing.delete(id); toast("メモを保存しました");
+  } catch(e){ toast(e.message, 5000); }
+  state.busy.delete(id); render();
 }
 
 function renderHeader(){
   const d = state.data;
   $("updated").textContent = d?.updated_at ? `最終更新 ${d.updated_at.replace("T"," ").slice(0,16)}` : "";
   $("srcLink").href = d?.search_url || "https://www.carsensor.net/";
-  $("market").innerHTML = Object.entries(d?.market || {}).map(([g,m]) =>
-    `<div class="mchip"><b>${esc(g)}</b>　本命 ${m.main}台・惜しい ${m.near}台　｜　5万km以内の支払総額：中央値 ${m.median?.toFixed(1) ?? "-"}万円・最安 ${m.min?.toFixed(1) ?? "-"}万円（${m.count}台）</div>`
-  ).join("");
+  const mk = Object.entries(d?.market || {});
+  $("market").innerHTML = mk.length ? `<span>相場（5万km以内・支払総額）</span>` + mk.map(([g,m]) =>
+    `<span class="sep"></span><span><b>${esc(g)}</b>　中央値 <b>${m.median?.toFixed(1) ?? "-"}</b>万円・最安 ${m.min?.toFixed(1) ?? "-"}万円（${m.count}台）</span>`
+  ).join("") : "";
+  const prefs = d?.conditions?.prefs || Object.keys(PREF_POS);
+  const cur = $("pref").value;
+  $("pref").innerHTML = `<option value="">全地域</option>` + prefs.map(p => `<option ${p===cur?"selected":""}>${esc(p)}</option>`).join("");
   const k = d?.conditions;
   if (k) $("cond").textContent = `本命：${k.year_min}年以降・修復歴なし・全方位カメラ・ガソリン車（e-SKYACTIV X含む）・支払総額${k.main_total_price_max}万円以内・${k.main_mileage_max}万km以内　／　惜しい候補：支払総額${k.near_total_price_max}万円以内・${k.near_mileage_max}万km以内　／　地域：${k.prefs.join("・")}　／　情報元：カーセンサー`;
   $("warn").innerHTML = (!settings.token) ? `<div class="warn">星を保存するには右上の「⚙ 設定」でGitHubのトークンを登録してください。</div>` : "";
@@ -338,24 +412,34 @@ function renderHeader(){
 // ---------- events ----------
 document.addEventListener("click", (e) => {
   const t = e.target.closest("[data-tab]"); if (t){ state.tab = t.dataset.tab; render(); scrollToList(); return; }
-  const s = e.target.closest("[data-star]"); if (s){ e.preventDefault(); toggleStar(s.dataset.star); }
+  const s = e.target.closest("[data-star]"); if (s){ e.preventDefault(); toggleStar(s.dataset.star); return; }
+  const me = e.target.closest("[data-memo-edit]"); if (me){ editing.add(me.dataset.memoEdit); render();
+    const ta = document.querySelector(`[data-memo-input="${CSS.escape(me.dataset.memoEdit)}"]`); ta?.focus(); return; }
+  const mc = e.target.closest("[data-memo-cancel]"); if (mc){ editing.delete(mc.dataset.memoCancel); render(); return; }
+  const ms = e.target.closest("[data-memo-save]"); if (ms){ saveMemo(ms.dataset.memoSave); return; }
 });
 function scrollToList(){
   const top = document.querySelector("header").offsetHeight;
   if (window.scrollY > top) window.scrollTo({ top, behavior: "instant" });
 }
 $("model").onchange = () => { render(); scrollToList(); };
+$("pref").onchange = () => { render(); scrollToList(); };
 $("sort").onchange = () => { safeSet("sort", $("sort").value); render(); };
-$("settingsBtn").onclick = () => { $("repo").value = settings.repo; $("token").value = settings.token; $("settings").showModal(); };
+$("settingsBtn").onclick = () => {
+  $("repo").value = settings.repo; $("token").value = settings.token;
+  $("home").innerHTML = `<option value="">未設定</option>` + Object.keys(PREF_POS).map(p => `<option ${p===homePref()?"selected":""}>${p}</option>`).join("");
+  $("settings").showModal();
+};
 $("cancelSettings").onclick = () => $("settings").close();
 $("saveSettings").onclick = async () => {
-  safeSet("repo", $("repo").value.trim()); safeSet("token", $("token").value.trim());
+  safeSet("repo", $("repo").value.trim()); safeSet("token", $("token").value.trim()); safeSet("home", $("home").value);
+  if (!settings.token){ $("settings").close(); renderHeader(); render(); return; }
   try {
     const res = await gh("");
     if (!res.ok) throw new Error(res.status);
     const j = await res.json();
     if (!j.permissions?.push) throw new Error("書き込み権限がありません");
-    toast("接続できました"); $("settings").close();
+    toast("保存しました（GitHubに接続できました）"); $("settings").close();
   } catch(err){ toast(`接続できませんでした（${err.message}）。リポジトリ名とトークンを確認してください`, 6000); return; }
   await loadStars(); renderHeader(); render();
 };

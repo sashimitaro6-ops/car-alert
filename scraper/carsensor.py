@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 import time
+import unicodedata
 from urllib.parse import urlencode, urljoin
 
 import requests
@@ -119,6 +120,11 @@ def parse_cards(html: str) -> list[dict]:
                 "url": f"{BASE}/usedcar/detail/{cid}/index.html",
             }
         )
+    # 全角英数字・全角スペースを半角にそろえる（例：Ｗｅｓｔ　Ｖｉｌｌａｇｅ → West Village）
+    for car in cars:
+        for k, v in car.items():
+            if isinstance(v, str) and k not in ("id", "url", "image"):
+                car[k] = unicodedata.normalize("NFKC", v).strip()
     return cars
 
 
