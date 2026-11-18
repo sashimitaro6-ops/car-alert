@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>マツダ中古車ウォッチ</title>
+<style>
+:root{
+  --bg:#f5f6f8; --panel:#fff; --text:#16181d; --muted:#667085; --line:#e4e7ec;
+  --accent:#1d4ed8; --main:#16a34a; --near:#d97706; --drop:#dc2626; --star:#f5b301; --ended:#6b7280;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Hiragino Sans","Yu Gothic UI",sans-serif;font-size:14px}
+header{background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+.top{display:flex;align-items:center;gap:16px;padding:14px 0 10px}
+.top h1{font-size:19px;margin:0}
+.top .updated{color:var(--muted);font-size:12px}
+.top .spacer{flex:1}
+button{font:inherit;cursor:pointer}
+.btn{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:6px 12px}
+.btn:hover{background:#f0f2f5}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.market{display:flex;gap:12px;padding:0 0 10px;flex-wrap:wrap}
+.mchip{background:#f0f4ff;border-radius:8px;padding:6px 10px;font-size:12.5px}
+.mchip b{font-size:13px}
+.bar{display:flex;align-items:center;gap:8px;padding:0 0 12px;flex-wrap:wrap}
+.tab{border:none;background:none;padding:7px 12px;border-radius:999px;color:var(--muted);font-weight:600}
+.tab.on{background:var(--text);color:#fff}
+.tab .n{opacity:.75;font-weight:400;margin-left:4px}
+select{font:inherit;padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+.cond{color:var(--muted);font-size:12px;padding:12px 0 0}
+main.wrap{padding-top:16px;padding-bottom:60px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.card.ended{opacity:.62}
+.thumb{position:relative;aspect-ratio:4/3;background:#e9ecf1;display:block}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.badges{position:absolute;left:8px;top:8px;display:flex;gap:4px;flex-wrap:wrap}
+.badge{font-size:11px;font-weight:700;color:#fff;padding:2px 7px;border-radius:5px}
+.b-main{background:var(--main)} .b-near{background:var(--near)} .b-new{background:var(--accent)}
+.b-drop{background:var(--drop)} .b-ended{background:var(--ended)} .b-oos{background:#475467}
+.starbtn{position:absolute;right:8px;top:8px;width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,.92);font-size:21px;line-height:38px;color:#b8bec9;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.starbtn.on{color:var(--star)}
+.starbtn:disabled{opacity:.5;cursor:wait}
+.body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.title{font-weight:700;font-size:14.5px;line-height:1.35}
+.title a{color:inherit;text-decoration:none}
+.title a:hover{color:var(--accent);text-decoration:underline}
+.price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.price .total{font-size:22px;font-weight:800}
+.price .total small{font-size:13px;font-weight:600}
+.price .base{color:var(--muted);font-size:12px}
+.drop{color:var(--drop);font-weight:700;font-size:12.5px}
+.specs{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:2px 14px;font-size:13px}
+.specs span{color:var(--muted);font-size:11px;display:block}
+.meta{color:var(--muted);font-size:12px;line-height:1.5}
+.reasons{color:var(--near);font-size:12px;font-weight:600}
+.catch{color:var(--muted);font-size:11.5px;line-height:1.45;max-height:3.0em;overflow:hidden}
+details{font-size:12px;color:var(--muted)}
+details table{border-collapse:collapse;margin-top:4px}
+details td{padding:1px 10px 1px 0}
+.empty{background:var(--panel);border:1px dashed var(--line);border-radius:12px;padding:48px;text-align:center;color:var(--muted)}
+dialog{border:none;border-radius:14px;padding:24px;width:520px;max-width:calc(100% - 32px);box-shadow:0 10px 40px rgba(0,0,0,.25)}
+dialog::backdrop{background:rgba(0,0,0,.35)}
+dialog h2{margin:0 0 12px;font-size:17px}
+dialog label{display:block;font-weight:600;margin:12px 0 4px}
+dialog input{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px}
+dialog .help{color:var(--muted);font-size:12px;line-height:1.6}
+dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;display:none;z-index:50}
+.warn{background:#fff7e6;border:1px solid #f5d38f;color:#7a4b00;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top">
+      <h1>マツダ中古車ウォッチ</h1>
+      <span class="updated" id="updated"></span>
+      <span class="spacer"></span>
+      <a class="btn" id="srcLink" target="_blank" rel="noopener">カーセンサーで検索結果を開く</a>
+      <button class="btn" id="settingsBtn">⚙ 設定</button>
+    </div>
+    <div class="market" id="market"></div>
+    <div class="bar">
+      <div id="tabs"></div>
+      <span class="spacer" style="flex:1"></span>
+      <select id="model">
+        <option value="">全車種</option>
+        <option value="MAZDA3">MAZDA3</option>
+        <option value="CX-30">CX-30</option>
+      </select>
+      <select id="sort">
+        <option value="price">支払総額が安い順</option>
+        <option value="new">新着順</option>
+        <option value="km">走行距離が少ない順</option>
+        <option value="year">年式が新しい順</option>
+      </select>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+  <div id="warn"></div>
+  <div class="grid" id="grid"></div>
+  <p class="cond" id="cond"></p>
+</main>
+
+<dialog id="settings">
+  <h2>設定（星の保存先）</h2>
+  <p class="help">星はGitHubのリポジトリ内の <code>docs/data/stars.json</code> に保存します。ブラウザのデータを消しても星は消えません（消えた場合はここにトークンを入れ直すだけで戻ります）。</p>
+  <label for="repo">リポジトリ（ユーザー名/リポジトリ名）</label>
+  <input id="repo" placeholder="例: yourname/car-alert">
+  <label for="token">GitHub アクセストークン</label>
+  <input id="token" type="password" placeholder="github_pat_...">
+  <p class="help">このリポジトリだけに「Contents: Read and write」権限を与えた Fine-grained token を使ってください。トークンはこのパソコンのブラウザ内にだけ保存されます。</p>
+  <div class="row">
+    <button class="btn" id="cancelSettings">閉じる</button>
+    <button class="btn primary" id="saveSettings">保存して接続テスト</button>
+  </div>
+</dialog>
+<div id="toast"></div>
+
+<script>
+const STAR_PATH = "docs/data/stars.json";
+const state = { data: null, stars: {}, starsSha: null, tab: "main", busy: new Set() };
+const $ = (id) => document.getElementById(id);
+
+function safeGet(k){ try { return localStorage.getItem(k) || ""; } catch { return ""; } }
+function safeSet(k,v){ try { localStorage.setItem(k, v); } catch {} }
+function guessRepo(){
+  const m = location.hostname.match(/^([^.]+)\.github\.io$/);
+  const seg = location.pathname.split("/").filter(Boolean)[0];
+  return m && seg ? `${m[1]}/${seg}` : "";
+}
+const settings = {
+  get repo(){ return safeGet("repo") || guessRepo(); },
+  get token(){ return safeGet("token"); },
+};
+
+function toast(msg, ms=2600){
+  const t = $("toast"); t.textContent = msg; t.style.display = "block";
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.style.display = "none", ms);
+}
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmtPrice = (v) => v == null ? "記載なし" : `${v.toFixed(1)}<small>万円</small>`;
+const fmtKm = (v) => v == null ? "-" : `${Math.round(v*10000).toLocaleString()}km`;
+const group = (c) => (c.model || "").startsWith("CX-30") ? "CX-30" : "MAZDA3";
+
+// ---------- GitHub API (stars) ----------
+async function gh(path, opts={}){
+  const res = await fetch(`https://api.github.com/repos/${settings.repo}/${path}`, {
+    ...opts,
+    headers: { "Accept": "application/vnd.github+json", "Authorization": `Bearer ${settings.token}`, ...(opts.headers||{}) },
+  });
+  return res;
+}
+const b64decode = (s) => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\n/g,"")), c => c.charCodeAt(0)));
+const b64encode = (s) => { const b = new TextEncoder().encode(s); let bin=""; b.forEach(x => bin += String.fromCharCode(x)); return btoa(bin); };
+
+async function loadStars(){
+  if (settings.token && settings.repo){
+    try {
+      const res = await gh(`contents/${STAR_PATH}?ref=main&t=${Date.now()}`);
+      if (res.ok){
+        const j = await res.json();
+        state.starsSha = j.sha;
+        state.stars = JSON.parse(b64decode(j.content) || "{}");
+        safeSet("starsCache", JSON.stringify(state.stars));
+        return;
+      }
+      if (res.status === 404){ state.starsSha = null; state.stars = {}; return; }
+      toast(`星の読み込みに失敗しました（${res.status}）。設定を確認してください`, 5000);
+    } catch(e){ toast("星の読み込みに失敗しました（通信エラー）", 5000); }
+  }
+  // トークン未設定時は公開ファイル（数分遅れ）かキャッシュを表示
+  try {
+    const r = await fetch(`data/stars.json?t=${Date.now()}`);
+    if (r.ok){ state.stars = await r.json(); return; }
+  } catch {}
+  try { state.stars = JSON.parse(safeGet("starsCache") || "{}"); } catch { state.stars = {}; }
+}
+
+async function saveStars(message, mutate){
+  // 競合（409/422）が起きたら最新を読み直して再適用する
+  for (let attempt = 0; attempt < 3; attempt++){
+    mutate(state.stars);
+    const body = { message, content: b64encode(JSON.stringify(state.stars, null, 1) + "\n"), branch: "main" };
+    if (state.starsSha) body.sha = state.starsSha;
+    const res = await gh(`contents/${STAR_PATH}`, { method: "PUT", body: JSON.stringify(body) });
+    if (res.ok){
+      state.starsSha = (await res.json()).content.sha;
+      safeSet("starsCache", JSON.stringify(state.stars));
+      return true;
+    }
+    if (res.status === 409 || res.status === 422){ await loadStars(); continue; }
+    throw new Error(`保存に失敗しました（${res.status}）`);
+  }
+  throw new Error("保存に失敗しました（競合が続いています）");
+}
+
+async function toggleStar(id){
+  if (!settings.token || !settings.repo){ toast("星を保存するには、まず ⚙設定 でトークンを登録してください", 4000); $("settings").showModal(); return; }
+  if (state.busy.has(id)) return;
+  state.busy.add(id); render();
+  const car = state.data.cars[id];
+  const on = !state.stars[id];
+  try {
+    await saveStars(`${on ? "★" : "☆"} ${car?.model || id}`, (s) => {
+      if (on) s[id] = { starred_at: new Date().toISOString(), snapshot: car ? snapshot(car) : (s[id]?.snapshot || null) };
+      else delete s[id];
+    });
+    toast(on ? "星をつけました" : "星を外しました");
+  } catch(e){ toast(e.message, 5000); await loadStars(); }
+  state.busy.delete(id); render();
+}
+function snapshot(c){
+  const keys = ["id","model","grade","catch","total_price","base_price","year","mileage","color","pref","city","shop","image","url","body","mission","repair","inspection"];
+  return Object.fromEntries(keys.map(k => [k, c[k]]));
+}
+
+// ---------- render ----------
+function allCars(){
+  const cars = { ...(state.data?.cars || {}) };
+  // 星つきでデータから消えた車はスナップショットで表示（掲載終了扱い）
+  for (const [id, s] of Object.entries(state.stars)){
+    if (!cars[id] && s?.snapshot) cars[id] = { ...s.snapshot, status: "ended", tier: "other", price_history: [] };
+  }
+  return Object.values(cars);
+}
+function lastDrop(c){
+  const h = (c.price_history || []).filter(x => (x.total ?? x.base) != null);
+  if (h.length < 2) return null;
+  const a = h[h.length-2], b = h[h.length-1];
+  const pa = a.total ?? a.base, pb = b.total ?? b.base;
+  return pb < pa ? { amount: pa - pb, date: b.date } : null;
+}
+function isNew(c){
+  const upd = (state.data?.updated_at || "").slice(0,10);
+  return c.first_seen && c.first_seen === upd;
+}
+
+const TABS = [
+  ["main","本命", c => c.status === "active" && c.tier === "main"],
+  ["near","惜しい候補", c => c.status === "active" && c.tier === "near"],
+  ["star","★ 保存", c => !!state.stars[c.id]],
+  ["all","掲載中すべて", c => c.status !== "ended"],
+  ["ended","掲載終了", c => c.status === "ended"],
+];
+
+function render(){
+  const cars = allCars();
+  const model = $("model").value;
+  $("tabs").innerHTML = TABS.map(([k,label,f]) => {
+    const n = cars.filter(c => f(c) && (!model || group(c) === model)).length;
+    return `<button class="tab ${state.tab===k?"on":""}" data-tab="${k}">${label}<span class="n">${n}</span></button>`;
+  }).join("");
+  const filt = TABS.find(t => t[0] === state.tab)[2];
+  let list = cars.filter(c => filt(c) && (!model || group(c) === model));
+  const sort = $("sort").value;
+  const P = (c) => c.total_price ?? c.base_price ?? 9999;
+  list.sort({
+    price: (a,b) => P(a) - P(b),
+    new: (a,b) => (b.first_seen||"").localeCompare(a.first_seen||"") || P(a) - P(b),
+    km: (a,b) => (a.mileage??99) - (b.mileage??99),
+    year: (a,b) => (b.year||0) - (a.year||0) || P(a) - P(b),
+  }[sort]);
+
+  $("grid").innerHTML = list.length ? list.map(card).join("") :
+    `<div class="empty" style="grid-column:1/-1">${state.tab==="star" ? "まだ星をつけた車はありません。気になる車の ☆ を押すと保存できます。" : "該当する車はありません。"}</div>`;
+}
+
+function card(c){
+  const starred = !!state.stars[c.id];
+  const drop = lastDrop(c);
+  const badges = [];
+  if (c.status === "ended") badges.push(`<span class="badge b-ended">掲載終了</span>`);
+  else if (c.status === "out_of_search") badges.push(`<span class="badge b-oos">条件外に変更</span>`);
+  if (c.status !== "ended"){
+    if (c.tier === "main") badges.push(`<span class="badge b-main">本命</span>`);
+    if (c.tier === "near") badges.push(`<span class="badge b-near">惜しい</span>`);
+    if (isNew(c)) badges.push(`<span class="badge b-new">NEW</span>`);
+    if (drop) badges.push(`<span class="badge b-drop">値下げ</span>`);
+  }
+  const hist = (c.price_history || []);
+  const histHtml = hist.length > 1 ? `<details><summary>価格の履歴（${hist.length}件）</summary><table>${
+    hist.map(h => `<tr><td>${esc(h.date)}</td><td>総額 ${h.total==null?"記載なし":h.total.toFixed(1)+"万円"}</td><td>本体 ${h.base==null?"-":h.base.toFixed(1)+"万円"}</td></tr>`).join("")
+  }</table></details>` : "";
+  const reasons = (c.near_reasons || []).length ? `<div class="reasons">惜しい点：${esc(c.near_reasons.join(" / "))}</div>` : "";
+  const endedNote = c.status === "ended" && c.ended_on ? `<div class="meta">掲載終了を確認：${esc(c.ended_on)}</div>` : "";
+  return `<article class="card ${c.status==="ended"?"ended":""}">
+    <a class="thumb" href="${esc(c.url)}" target="_blank" rel="noopener">
+      ${c.image ? `<img src="${esc(c.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ""}
+      <div class="badges">${badges.join("")}</div>
+    </a>
+    <button class="starbtn ${starred?"on":""}" data-star="${esc(c.id)}" title="${starred?"星を外す":"星をつける"}" ${state.busy.has(c.id)?"disabled":""}>${starred?"★":"☆"}</button>
+    <div class="body">
+      <div class="title"><a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(c.model)} ${esc(c.grade)}</a></div>
+      <div class="price"><span class="total">${fmtPrice(c.total_price)}</span><span class="base">支払総額 ／ 本体 ${c.base_price==null?"-":c.base_price.toFixed(1)+"万円"}</span>
+        ${drop ? `<span class="drop">▼${drop.amount.toFixed(1)}万円（${esc(drop.date.slice(5))}）</span>` : ""}</div>
+      ${reasons}
+      <div class="specs">
+        <div><span>年式</span>${esc(c.year ?? "-")}年</div>
+        <div><span>走行距離</span>${fmtKm(c.mileage)}</div>
+        <div><span>車検</span>${esc(c.inspection || "-")}</div>
+        <div><span>色</span>${esc(c.color || "-")}</div>
+        <div><span>ミッション</span>${esc((c.mission||"-").replace("フロア",""))}</div>
+        <div><span>保証</span>${esc(c.warranty || "-")}</div>
+      </div>
+      <div class="meta">${esc(c.pref)}${esc(c.city)}　${esc(c.shop)}</div>
+      <div class="catch">${esc(c.catch)}</div>
+      ${endedNote}
+      ${histHtml}
+      <div class="meta">初回掲載確認：${esc(c.first_seen || "-")}</div>
+    </div>
+  </article>`;
+}
+
+function renderHeader(){
+  const d = state.data;
+  $("updated").textContent = d?.updated_at ? `最終更新 ${d.updated_at.replace("T"," ").slice(0,16)}` : "";
+  $("srcLink").href = d?.search_url || "https://www.carsensor.net/";
+  $("market").innerHTML = Object.entries(d?.market || {}).map(([g,m]) =>
+    `<div class="mchip"><b>${esc(g)}</b>　本命 ${m.main}台・惜しい ${m.near}台　｜　5万km以内の支払総額：中央値 ${m.median?.toFixed(1) ?? "-"}万円・最安 ${m.min?.toFixed(1) ?? "-"}万円（${m.count}台）</div>`
+  ).join("");
+  const k = d?.conditions;
+  if (k) $("cond").textContent = `本命：${k.year_min}年以降・修復歴なし・全方位カメラ・ガソリン車（e-SKYACTIV X含む）・支払総額${k.main_total_price_max}万円以内・${k.main_mileage_max}万km以内　／　惜しい候補：支払総額${k.near_total_price_max}万円以内・${k.near_mileage_max}万km以内　／　地域：${k.prefs.join("・")}　／　情報元：カーセンサー`;
+  $("warn").innerHTML = (!settings.token) ? `<div class="warn">星を保存するには右上の「⚙ 設定」でGitHubのトークンを登録してください。</div>` : "";
+}
+
+// ---------- events ----------
+document.addEventListener("click", (e) => {
+  const t = e.target.closest("[data-tab]"); if (t){ state.tab = t.dataset.tab; render(); return; }
+  const s = e.target.closest("[data-star]"); if (s){ e.preventDefault(); toggleStar(s.dataset.star); }
+});
+$("model").onchange = render;
+$("sort").onchange = () => { safeSet("sort", $("sort").value); render(); };
+$("settingsBtn").onclick = () => { $("repo").value = settings.repo; $("token").value = settings.token; $("settings").showModal(); };
+$("cancelSettings").onclick = () => $("settings").close();
+$("saveSettings").onclick = async () => {
+  safeSet("repo", $("repo").value.trim()); safeSet("token", $("token").value.trim());
+  try {
+    const res = await gh("");
+    if (!res.ok) throw new Error(res.status);
+    const j = await res.json();
+    if (!j.permissions?.push) throw new Error("書き込み権限がありません");
+    toast("接続できました"); $("settings").close();
+  } catch(err){ toast(`接続できませんでした（${err.message}）。リポジトリ名とトークンを確認してください`, 6000); return; }
+  await loadStars(); renderHeader(); render();
+};
+
+(async function init(){
+  const s = safeGet("sort"); if (s) $("sort").value = s;
+  try {
+    const r = await fetch(`data/listings.json?t=${Date.now()}`);
+    state.data = r.ok ? await r.json() : { cars: {} };
+  } catch { state.data = { cars: {} }; }
+  await loadStars();
+  renderHeader(); render();
+})();
+</script>
+</body>
+</html>
