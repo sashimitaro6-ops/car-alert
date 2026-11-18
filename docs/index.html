@@ -52,11 +52,11 @@ a:hover{text-decoration:underline}
 .iconbtn:hover{background:var(--fill);color:var(--text)}
 
 /* ---------- hero ---------- */
-.hero{text-align:center;padding:56px 0 40px}
+.hero{text-align:center;padding:40px 0 32px}
 .eyebrow{font-size:17px;font-weight:600;color:var(--near);margin:0 0 10px;letter-spacing:.01em}
 .hero h1{font-size:52px;line-height:1.06;font-weight:700;letter-spacing:-.025em;margin:0}
 .hero .lead{font-size:19px;line-height:1.5;color:var(--text-2);margin:14px auto 0;max-width:860px;font-weight:400;text-wrap:balance}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);margin:36px auto 0;max-width:920px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);margin:0 auto;max-width:920px}
 .stat{padding:4px 12px;border-left:1px solid var(--hair)}
 .stat:first-child{border-left:none}
 .stat .lbl{font-size:13px;color:var(--text-2);font-weight:500}
@@ -65,7 +65,7 @@ a:hover{text-decoration:underline}
 .stat.good .val{color:var(--main)} .stat.red .val{color:var(--drop)}
 .market{margin:24px auto 0;display:flex;justify-content:center;gap:28px;flex-wrap:wrap;font-size:14px;color:var(--text-2)}
 .market b{color:var(--text);font-weight:600}
-.updated{margin-top:14px;font-size:12px;color:var(--text-3)}
+.updated{margin-top:18px;font-size:12px;color:var(--text-3)}
 
 /* ---------- sticky local nav ---------- */
 .lnav{position:sticky;top:0;z-index:20;background:var(--nav);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
@@ -270,10 +270,41 @@ dialog .row{display:flex;gap:10px;justify-content:flex-end;margin-top:28px}
   .card.pre{opacity:1;transform:none}
 }
 @media (max-width: 900px){
-  .hero h1{font-size:44px} .stats{grid-template-columns:repeat(2,1fr);row-gap:28px} .stat:nth-child(3){border-left:none}
+  .stats{grid-template-columns:repeat(2,1fr);row-gap:28px} .stat:nth-child(3){border-left:none}
   .lnav .wrap{grid-template-columns:1fr} .lnav .ttl,.lnav .totop{display:none} .lnav .seg{justify-self:center}
   .sechead .right{align-items:flex-start}
 }
+.tab .ls{display:none}
+.lnav .seg{max-width:100%;min-width:0;overflow-x:auto;scrollbar-width:none}
+.lnav .seg::-webkit-scrollbar{display:none}
+.cmpwrap{overflow-x:auto}
+
+/* ---------- phones ---------- */
+@media (max-width: 640px){
+  .wrap{padding:0 16px}
+  .gnav .ext{display:none}
+  .hero{padding:24px 0 20px}
+  .stats{grid-template-columns:repeat(2,1fr);row-gap:20px}
+  .stat .val{font-size:32px} .stat .val small{font-size:15px}
+  .tab{padding:6px 10px;font-size:13px} .tab .lf{display:none} .tab .ls{display:inline} .tab .n{margin-left:3px}
+  .lnav .wrap{height:auto;padding-top:8px;padding-bottom:8px}
+  main{padding:24px 0 32px}
+  .sechead{margin-bottom:18px;gap:12px} .sechead h2{font-size:28px} .sechead p{font-size:14px}
+  .sechead .right{width:100%;align-items:stretch} .filters{justify-content:flex-start}
+  .select select{padding:7px 26px 7px 12px}
+  .grid{grid-template-columns:1fr;gap:18px}
+  .body{padding:16px 18px}
+  dialog.sheet,dialog.cmpdlg,dialog#settings{width:100vw;max-width:100vw;max-height:100dvh;height:100dvh;margin:0;border-radius:0}
+  dialog.cmpdlg{padding:20px 16px} dialog#settings{padding:24px 20px}
+  .dgrid{padding:56px 16px 0;gap:20px} .dsec{padding:20px 16px 0}
+  .dinfo h2{font-size:24px} .dinfo .price .total{font-size:36px}
+  .ctable{min-width:calc(150px * var(--n, 2) + 90px)} .ctable th{width:90px}
+  .tray{bottom:16px;max-width:calc(100vw - 24px);gap:8px;padding:8px 8px 8px 12px} .tray .lbl{font-size:13px}
+  #toast{max-width:calc(100vw - 32px);text-align:center}
+  .notice{flex-wrap:wrap}
+  .lnav .wrap{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width: 360px){ .tab{padding:6px 7px;font-size:12px} .tab .n{margin-left:2px} .stat .val{font-size:28px} }
 </style>
 </head>
 <body>
@@ -290,11 +321,7 @@ dialog .row{display:flex;gap:10px;justify-content:flex-end;margin-top:28px}
 
 <header class="hero" id="hero">
   <div class="wrap">
-    <p class="eyebrow">MAZDA3 ・ CX-30</p>
-    <h1>条件に合う一台だけを。</h1>
-    <p class="lead" id="lead">毎晩21時に、関西・三重・福井から探します。</p>
     <div class="stats" id="stats"></div>
-    <div class="market" id="market"></div>
     <div class="updated" id="updated"></div>
   </div>
 </header>
@@ -506,12 +533,12 @@ const isNew = (c) => c.first_seen && c.first_seen === updDate();
 function tabsDef(){
   const k = state.data?.conditions || {};
   return [
-    ["main","本命", c => c.status === "active" && c.tier === "main", "すべての条件を満たす車。"],
+    ["main","本命", c => c.status === "active" && c.tier === "main", "すべての条件を満たす車。", "本命"],
     ["near","惜しい候補", c => c.status === "active" && c.tier === "near",
-      `支払総額${k.near_total_price_max ?? 220}万円・${k.near_mileage_max ?? 6}万kmまで広げると見つかる車。`],
-    ["star","保存", c => !!state.stars[c.id], "★をつけた車と、そのメモ。"],
-    ["all","すべて", c => c.status !== "ended", "全方位カメラ付き・修復歴なしのガソリン車すべて。"],
-    ["ended","掲載終了", c => c.status === "ended", "売れた、または掲載が終わった車。"],
+      `支払総額${k.near_total_price_max ?? 220}万円・${k.near_mileage_max ?? 6}万kmまで広げると見つかる車。`, "惜しい"],
+    ["star","保存", c => !!state.stars[c.id], "★をつけた車と、そのメモ。", "保存"],
+    ["all","すべて", c => c.status !== "ended", "全方位カメラ付き・修復歴なしのガソリン車すべて。", "すべて"],
+    ["ended","掲載終了", c => c.status === "ended", "売れた、または掲載が終わった車。", "終了"],
   ];
 }
 
@@ -521,9 +548,9 @@ function render(animate = false){
   const model = $("model").value, pref = $("pref").value;
   const match = (c) => (!model || group(c) === model) && (!pref || c.pref === pref);
   const TABS = tabsDef();
-  $("tabs").innerHTML = TABS.map(([k,label,f]) => {
+  $("tabs").innerHTML = TABS.map(([k,label,f,,short]) => {
     const n = cars.filter(c => f(c) && match(c)).length;
-    return `<button class="tab ${state.tab===k?"on":""}" data-tab="${k}" role="tab" aria-selected="${state.tab===k}">${label}<span class="n">${n}</span></button>`;
+    return `<button class="tab ${state.tab===k?"on":""}" data-tab="${k}" role="tab" aria-selected="${state.tab===k}"><span class="lf">${label}</span><span class="ls">${short}</span><span class="n">${n}</span></button>`;
   }).join("");
   moveIndicator(animate);
 
@@ -788,7 +815,7 @@ function renderCompare(){
       <h2 style="margin:0">比較</h2>
       <div style="display:flex;gap:10px"><button class="btn" data-cmp-clear>すべて外す</button><button class="btn" data-close>閉じる</button></div>
     </div>
-    <table class="ctable">
+    <div class="cmpwrap"><table class="ctable" style="--n:${cars.length}">
       <colgroup><col style="width:120px">${cars.map(() => "<col>").join("")}</colgroup>
       <tr class="head"><th></th>${cars.map(c => `<td><div class="pic" data-detail="${esc(c.id)}">${c.image ? `<img src="${esc(c.image)}" alt="" referrerpolicy="no-referrer">` : ""}</div>
         <div class="name"><small>${esc(nz(c.model))}</small>${esc(nz(c.grade))}</div><button class="rm" data-cmp="${esc(c.id)}">比較から外す</button></td>`).join("")}</tr>
@@ -806,7 +833,7 @@ function renderCompare(){
       ${row("掲載確認から", (c, i) => `<td>${days[i] == null ? "-" : days[i] + "日"}</td>`)}
       ${row("状態", c => `<td>${c.status === "ended" ? "掲載終了" : c.tier === "main" ? "本命" : c.tier === "near" ? "惜しい候補" : "掲載中"}</td>`)}
       ${row("メモ", c => `<td style="white-space:pre-wrap">${esc(state.stars[c.id]?.memo || "-")}</td>`)}
-    </table>
+    </table></div>
     <p style="color:var(--text-3);font-size:12px;margin-top:16px">◎ は比べた中で一番良い値（支払総額・走行距離・自宅からの距離は小さい方、年式は新しい方）。</p>`;
 }
 
@@ -849,7 +876,6 @@ function renderHeader(){
   const minMain = mains.reduce((m,c) => c.total_price != null && (m == null || c.total_price < m) ? c.total_price : m, null);
   const newToday = active.filter(c => (c.tier === "main" || c.tier === "near") && isNew(c)).length;
   const drops = active.filter(c => (c.tier === "main" || c.tier === "near") && lastDrop(c)?.date === updDate()).length;
-  if (k) $("lead").innerHTML = `${k.year_min}年以降・全方位カメラ・修復歴なし・支払総額${k.main_total_price_max}万円以内。<br>${k.prefs.length >= 8 ? "関西・三重・福井" : esc(k.prefs.join("・"))}から、毎晩21時に見つけます。`;
   const stats = [
     ["本命", mains.length, 0, "台", "good"],
     ["本命の最安", minMain, 1, "万円", ""],
@@ -859,9 +885,6 @@ function renderHeader(){
   $("stats").innerHTML = stats.map(([l,,,u,cls], i) => `<div class="stat ${cls}"><div class="lbl">${l}</div><div class="val"><span data-stat="${i}">-</span><small>${u}</small></div></div>`).join("");
   stats.forEach(([, v, dec], i) => countUp(document.querySelector(`[data-stat="${i}"]`), v, dec));
 
-  const mk = Object.entries(d?.market || {});
-  $("market").innerHTML = mk.map(([g,m]) =>
-    `<span><b>${esc(g)}</b>　5万km以内の相場 ${m.median?.toFixed(1) ?? "-"}万円（${m.count}台）</span>`).join("");
   $("updated").textContent = d?.updated_at ? `最終更新 ${d.updated_at.replace("T"," ").slice(0,16)}` : "";
   $("srcLink").href = d?.search_url || "https://www.carsensor.net/";
   const prefs = k?.prefs || Object.keys(PREF_POS);
