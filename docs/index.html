@@ -12,7 +12,9 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Hiragino Sans","Yu Gothic UI",sans-serif;font-size:14px}
-header{background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+header{background:var(--panel)}
+.stickybar{background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10;transition:box-shadow .15s}
+.stickybar.stuck{box-shadow:0 2px 10px rgba(0,0,0,.08)}
 .wrap{max-width:1280px;margin:0 auto;padding:0 24px}
 .top{display:flex;align-items:center;gap:16px;padding:14px 0 10px}
 .top h1{font-size:19px;margin:0}
@@ -25,7 +27,7 @@ button{font:inherit;cursor:pointer}
 .market{display:flex;gap:12px;padding:0 0 10px;flex-wrap:wrap}
 .mchip{background:#f0f4ff;border-radius:8px;padding:6px 10px;font-size:12.5px}
 .mchip b{font-size:13px}
-.bar{display:flex;align-items:center;gap:8px;padding:0 0 12px;flex-wrap:wrap}
+.bar{display:flex;align-items:center;gap:8px;padding:8px 0;flex-wrap:wrap}
 .tab{border:none;background:none;padding:7px 12px;border-radius:999px;color:var(--muted);font-weight:600}
 .tab.on{background:var(--text);color:#fff}
 .tab .n{opacity:.75;font-weight:400;margin-left:4px}
@@ -84,6 +86,10 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
       <button class="btn" id="settingsBtn">⚙ 設定</button>
     </div>
     <div class="market" id="market"></div>
+  </div>
+</header>
+<div class="stickybar" id="stickybar">
+  <div class="wrap">
     <div class="bar">
       <div id="tabs"></div>
       <span class="spacer" style="flex:1"></span>
@@ -100,7 +106,7 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
       </select>
     </div>
   </div>
-</header>
+</div>
 <main class="wrap">
   <div id="warn"></div>
   <div class="grid" id="grid"></div>
@@ -331,10 +337,14 @@ function renderHeader(){
 
 // ---------- events ----------
 document.addEventListener("click", (e) => {
-  const t = e.target.closest("[data-tab]"); if (t){ state.tab = t.dataset.tab; render(); return; }
+  const t = e.target.closest("[data-tab]"); if (t){ state.tab = t.dataset.tab; render(); scrollToList(); return; }
   const s = e.target.closest("[data-star]"); if (s){ e.preventDefault(); toggleStar(s.dataset.star); }
 });
-$("model").onchange = render;
+function scrollToList(){
+  const top = document.querySelector("header").offsetHeight;
+  if (window.scrollY > top) window.scrollTo({ top, behavior: "instant" });
+}
+$("model").onchange = () => { render(); scrollToList(); };
 $("sort").onchange = () => { safeSet("sort", $("sort").value); render(); };
 $("settingsBtn").onclick = () => { $("repo").value = settings.repo; $("token").value = settings.token; $("settings").showModal(); };
 $("cancelSettings").onclick = () => $("settings").close();
@@ -349,6 +359,10 @@ $("saveSettings").onclick = async () => {
   } catch(err){ toast(`接続できませんでした（${err.message}）。リポジトリ名とトークンを確認してください`, 6000); return; }
   await loadStars(); renderHeader(); render();
 };
+
+// 上部のバーが固定されたら影をつける
+new IntersectionObserver(([e]) => $("stickybar").classList.toggle("stuck", e.intersectionRatio === 0))
+  .observe(document.querySelector("header"));
 
 (async function init(){
   const s = safeGet("sort"); if (s) $("sort").value = s;
