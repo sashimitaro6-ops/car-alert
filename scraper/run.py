@@ -16,7 +16,7 @@ import traceback
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from . import carsensor, config, mailer
+from . import carsensor, config, details, mailer
 
 JST = timezone(timedelta(hours=9))
 ROOT = Path(__file__).resolve().parent.parent
@@ -36,7 +36,10 @@ def load_json(path: Path, default):
 
 def save_json(path: Path, data) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    # listings.json は大きいので改行・インデントなしで保存（画面の読み込みを速くする）
+    compact = path.name == "listings.json"
+    text = json.dumps(data, ensure_ascii=False, separators=(",", ":")) if compact else json.dumps(data, ensure_ascii=False, indent=1)
+    path.write_text(text + "\n", encoding="utf-8")
 
 
 def classify(car: dict) -> str:
@@ -117,6 +120,8 @@ def update_state(prev: dict, scraped: list[dict], stars: dict, today: str, check
             rec["price_history"] = [{"date": today, "total": car["total_price"], "base": car["base_price"]}]
         else:
             rec["first_seen"] = old.get("first_seen", today)
+            if old.get("detail"):
+                rec["detail"] = old["detail"]
             hist = list(old.get("price_history", []))
             last_total = hist[-1]["total"] if hist else None
             last_base = hist[-1].get("base") if hist else None
@@ -186,6 +191,12 @@ def main() -> int:
 
     scraped = [c for c in result["cars"] if not carsensor.is_diesel(c["title"], c["displacement"])]
     cars, events = update_state(prev, scraped, stars, today)
+    # 本命・惜しい候補・星つきの車は詳細ページから状態・保証・装備・全写真を取得（失敗しても続行）
+    try:
+        pages = details.enrich(cars, stars, today)
+        print(f"詳細ページ取得 {pages}件")
+    except Exception:  # noqa: BLE001
+        traceback.print_exc()
     active = [c for c in cars.values() if c["status"] == "active"]
     market = market_summary(active)
 

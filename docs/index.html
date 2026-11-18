@@ -122,9 +122,11 @@ dialog.sheet{width:min(1060px,94vw);max-height:90vh;padding:0;overflow:auto;bord
   backdrop-filter:blur(10px);font-size:20px;color:#1d1d1f;opacity:0;transition:opacity .3s}
 .gallery .main:hover .nav{opacity:1}
 .gallery .prev{left:12px} .gallery .next{right:12px}
+.gallery .count{position:absolute;right:12px;bottom:12px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;padding:3px 10px;border-radius:999px;backdrop-filter:blur(8px)}
+.gallery .cat{font-weight:600;color:var(--text);margin-right:6px}
 .gallery .cap{min-height:2.9em;font-size:12px;color:var(--text-2);margin:10px 2px 0;line-height:1.5}
-.thumbs{display:flex;gap:8px;margin-top:10px}
-.thumbs button{flex:1;aspect-ratio:4/3;border:none;padding:0;border-radius:10px;overflow:hidden;background:var(--fill);opacity:.55;outline:2px solid transparent;outline-offset:2px;transition:opacity .2s,outline-color .2s}
+.thumbs{display:flex;gap:8px;margin-top:10px;overflow-x:auto;scroll-behavior:smooth;padding:3px;scrollbar-width:thin}
+.thumbs button{flex:0 0 76px;aspect-ratio:4/3;border:none;padding:0;border-radius:10px;overflow:hidden;background:var(--fill);opacity:.55;outline:2px solid transparent;outline-offset:2px;transition:opacity .2s,outline-color .2s}
 .thumbs button.on{opacity:1;outline-color:var(--link)}
 .thumbs button:hover{opacity:1}
 .thumbs img{width:100%;height:100%;object-fit:cover;display:block}
@@ -141,6 +143,14 @@ dialog.sheet{width:min(1060px,94vw);max-height:90vh;padding:0;overflow:auto;bord
 .dsec{padding:24px 40px 0}
 .dsec:last-child{padding-bottom:40px}
 .dsec h3{font-size:21px;font-weight:700;letter-spacing:-.015em;margin:0 0 12px}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:11.5px;padding:3px 9px;border-radius:999px;background:var(--fill);color:var(--text-2);white-space:nowrap}
+.tag.ok{background:var(--main-bg);color:var(--main);font-weight:600}
+.eqgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+.eqgrid h4{margin:0 0 8px;font-size:13px;color:var(--text-2);font-weight:600}
+.spec2{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0 28px}
+.spec2 div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid var(--hair);font-size:14px}
+.spec2 span{color:var(--text-2)}
 .dsec .txt{color:var(--text-2);font-size:14px;line-height:1.7;white-space:pre-wrap}
 .chartbox{background:var(--surface-2);border:1px solid var(--hair);border-radius:18px;padding:18px 20px}
 .chartbox svg{display:block;width:100%;height:auto;overflow:visible}
@@ -167,6 +177,10 @@ dialog.cmpdlg{width:min(1180px,96vw);max-height:90vh;overflow:auto;padding:40px}
 .ctable .best{color:var(--main);font-weight:700}
 .ctable .best::after{content:"  ◎";font-size:11px}
 .ctable .big{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.ctable tr.grp th{padding-top:26px;font-size:13px;font-weight:700;color:var(--text);border-top:none}
+.ctable tr.grp td{border-top:none}
+.ctable .yes{color:var(--main);font-weight:700}
+.ctable .no{color:var(--text-3)}
 .ctable .rm{border:none;background:none;color:var(--text-3);font-size:12px;padding:0;margin-top:8px}
 .ctable .rm:hover{color:var(--drop)}
 @media (max-width: 900px){ .dgrid{grid-template-columns:1fr;padding:28px 24px 0} .dsec{padding:20px 24px 0} }
@@ -507,7 +521,7 @@ async function toggleStar(id){
   state.busy.delete(id); render();
 }
 function snapshot(c){
-  const keys = ["id","model","grade","catch","total_price","base_price","year","mileage","color","pref","city","shop","image","photos","url","body","mission","repair","inspection","warranty","displacement","first_seen","price_history"];
+  const keys = ["id","model","grade","catch","total_price","base_price","year","mileage","color","pref","city","shop","image","photos","url","body","mission","repair","inspection","warranty","displacement","first_seen","price_history","detail"];
   return Object.fromEntries(keys.map(k => [k, c[k]]));
 }
 
@@ -645,6 +659,7 @@ function card(c, animate){
       <h3 class="title"><a href="${esc(c.url)}" data-detail="${esc(c.id)}">${esc(nz(c.grade))}</a></h3>
       <div class="price"><span class="total">${fmtPrice(c.total_price)}</span><span class="base">支払総額・本体 ${c.base_price==null?"-":c.base_price.toFixed(1)+"万円"}</span></div>
       ${chips.join("")}
+      ${tagsHtml(c)}
       ${starred && priceSeries(c).length > 1 ? `<div class="spark">${chartSVG(c, {w:150, h:30})}<span>価格の推移</span></div>` : ""}
       <dl class="specs">
         <div><dt>年式</dt><dd>${esc(c.year ?? "-")}年</dd></div>
@@ -710,9 +725,45 @@ function chartSVG(c, { w = 150, h = 30, axes = false } = {}){
   return `<svg viewBox="0 0 ${w} ${h}" ${axes ? "" : `width="${w}" height="${h}"`} role="img" aria-label="価格の推移">${extra}<path d="${path}" fill="none" stroke="${col}" stroke-width="${axes ? 2.5 : 1.8}" stroke-linejoin="round" stroke-linecap="round"/>${dots}</svg>`;
 }
 
+// ---------- detail-page info (状態・保証・装備) ----------
+const spec = (c, k) => c.detail?.spec?.[k];
+const yes = (c, k) => spec(c, k) === "◯";
+function equipNames(c){
+  const set = new Set();
+  Object.values(c.detail?.equipment || {}).flat().forEach(n => { set.add(n); set.add(n.split(/[:：]/)[0]); });
+  return set;
+}
+function warrantyShort(c){
+  const w = spec(c, "保証"); if (!w) return null;
+  if (/保証無|保証なし/.test(w)) return "なし";
+  const per = (w.match(/保証期間:([^ ]+)/) || [])[1], dist = (w.match(/保証距離:([^ ]+)/) || [])[1];
+  return [per, dist && dist !== "-" ? dist : null].filter(Boolean).join("・") || "あり";
+}
+function tagsHtml(c){
+  if (!c.detail) return "";
+  const t = [];
+  if (yes(c, "ワンオーナー")) t.push("ワンオーナー");
+  if (yes(c, "禁煙車")) t.push("禁煙");
+  if (yes(c, "定期点検記録簿")) t.push("記録簿");
+  const w = warrantyShort(c); if (w && w !== "なし") t.push(`保証 ${w}`);
+  return t.length ? `<div class="tags">${t.map(x => `<span class="tag ok">${esc(x)}</span>`).join("")}</div>` : "";
+}
+function specShort(k, v){
+  if (k === "車体寸法") return v.replace(/\(mm\).*/, "mm");
+  if (k === "車両重量"){ const m = v.match(/\d+/); return m ? `${m[0]}kg` : v; }
+  if (k === "発売年月") return v.replace(/\(R\d+\)/, "").replace(/^(\d{2})\//, "20$1/");
+  return v;
+}
+const fuel = (c) => { const m = (spec(c, "WLTC燃費") || "").match(/[\d.]+/); return m ? +m[0] : null; };
+
 // ---------- detail ----------
 const findCar = (id) => allCars().find(c => c.id === id);
 function photosOf(c){
+  const g = c.detail?.photos || [];
+  if (g.length){
+    const isPromo = (p) => /販促/.test(p.category || "");
+    return [...g.filter(p => !isPromo(p)), ...g.filter(isPromo)];
+  }
   const list = [];
   if (c.image) list.push({ url: c.image, caption: "" });
   (c.photos || []).forEach(p => list.push(p));
@@ -740,9 +791,10 @@ function renderDetail(){
   (c.near_reasons || []).forEach(r => chips.push(`<span class="chip reason">${esc(r)}</span>`));
   const d = daysListed(c);
   const rows = [
-    ["年式", `${esc(c.year ?? "-")}年`], ["走行距離", fmtKm(c.mileage)], ["車検", esc(nz(c.inspection) || "-")],
-    ["色", esc(nz(c.color) || "-")], ["ミッション", esc(nz(c.mission) || "-")], ["排気量", esc(nz(c.displacement) || "-")],
-    ["ボディ", esc(nz(c.body) || "-")], ["修復歴", esc(c.repair || "-")], ["保証", esc(nz(c.warranty) || "-")],
+    ["年式", `${esc(c.year ?? "-")}年`], ["走行距離", fmtKm(c.mileage)], ["車検", esc(spec(c, "車検") || nz(c.inspection) || "-")],
+    ["色", esc(spec(c, "色") || nz(c.color) || "-")], ["ミッション", esc(nz(c.mission) || "-")], ["排気量", esc(nz(c.displacement) || "-")],
+    ["駆動方式", esc(spec(c, "駆動方式") || "-")], ["修復歴", esc(c.repair || "-")], ["保証", esc(spec(c, "保証") || nz(c.warranty) || "-")],
+    ["法定整備", esc(spec(c, "法定整備") || "-")], ["諸費用", c.detail?.fees != null ? `${c.detail.fees.toFixed(1)}万円` : "-"],
     ["所在地", `${esc(c.pref)}${esc(nz(c.city))}`], ["販売店", esc(nz(c.shop) || "-")],
     ["自宅から", distKm(c) == null ? `<a href="#" data-open-settings>自宅を設定する</a>` : esc(distLabel(c))],
     ["掲載確認", c.first_seen ? `${esc(c.first_seen)}（${d}日前から）` : "-"],
@@ -755,8 +807,9 @@ function renderDetail(){
   <div class="dgrid">
     <div class="gallery">
       <div class="main">${ph ? `<img src="${esc(ph.url)}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">` : ""}
+        ${photos.length > 1 ? `<span class="count">${i + 1} / ${photos.length}</span>` : ""}
         ${photos.length > 1 ? `<button class="nav prev" data-photo="${(i - 1 + photos.length) % photos.length}" aria-label="前の写真">‹</button><button class="nav next" data-photo="${(i + 1) % photos.length}" aria-label="次の写真">›</button>` : ""}</div>
-      <div class="cap">${esc(nz(ph?.caption || ""))}</div>
+      <div class="cap">${ph?.category && ph.category !== "未設定" ? `<span class="cat">${esc(ph.category)}</span>` : ""}${esc(nz(ph?.caption || ""))}</div>
       ${photos.length > 1 ? `<div class="thumbs">${photos.map((p, k) => `<button class="${k===i?"on":""}" data-photo="${k}" aria-label="写真${k+1}"><img src="${esc(p.url)}" alt="" loading="lazy" referrerpolicy="no-referrer"></button>`).join("")}</div>` : ""}
     </div>
     <div class="dinfo">
@@ -765,6 +818,7 @@ function renderDetail(){
       <h2>${esc(nz(c.grade))}</h2>
       <div class="price"><span class="total">${fmtPrice(c.total_price)}</span><span class="base">支払総額・本体 ${c.base_price==null?"-":c.base_price.toFixed(1)+"万円"}</span></div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">${chips.join("")}</div>
+      <div style="margin-top:10px">${tagsHtml(c)}</div>
       <div class="actions">
         <button class="btn ${starred?"":"primary"}" data-star="${esc(c.id)}" ${state.busy.has(c.id)?"disabled":""}>${starred ? "★ 保存済み" : "☆ 保存する"}</button>
         <button class="btn" data-cmp="${esc(c.id)}">${cmpOn ? "✓ 比較中" : "＋ 比較に追加"}</button>
@@ -778,7 +832,15 @@ function renderDetail(){
           : `<div class="txt">まだ価格の変動はありません。${c.first_seen ? `${esc(c.first_seen)} に ${fmtPrice(priceSeries(c)[0]?.v).replace(/<[^>]+>/g,"")} で確認して以来、同じ価格です。` : ""}値下げされると、ここにグラフで表示されます。</div>`
   }</div></section>
   ${starred ? `<section class="dsec"><h3>メモ</h3>${memoHtml(c.id)}</section>` : ""}
+  ${c.detail ? `<section class="dsec"><h3>装備</h3><div class="eqgrid">${Object.entries(c.detail.equipment || {}).map(([cat, items]) =>
+      `<div><h4>${esc(cat)}</h4><div class="tags">${items.length ? items.map(x => `<span class="tag">${esc(x)}</span>`).join("") : '<span class="tag">記載なし</span>'}</div></div>`).join("")}</div></section>
+    <section class="dsec"><h3>スペック</h3><div class="spec2">${["WLTC燃費","使用燃料","乗車定員","ドア数","ハンドル","車体寸法","車両重量","最小回転半径","発売年月","リサイクル料"]
+      .filter(k => spec(c, k)).map(k => `<div><span>${k}</span><b style="font-weight:500;text-align:right">${esc(specShort(k, spec(c, k)))}</b></div>`).join("")}</div></section>`
+    : `<section class="dsec"><h3>装備・スペック</h3><div class="txt">この車は詳細ページの情報をまだ取得していません（本命・惜しい候補・保存した車は自動で取得します）。</div></section>`}
   <section class="dsec"><h3>販売店のコメント</h3><div class="txt">${esc(nz(c.catch) || "なし")}</div></section>`;
+  // 選択中のサムネイルが見える位置まで横スクロール
+  const th = dlg.querySelector(".thumbs button.on"), strip = dlg.querySelector(".thumbs");
+  if (th && strip) strip.scrollLeft = th.offsetLeft - strip.clientWidth / 2 + th.offsetWidth / 2;
 }
 
 // ---------- compare ----------
@@ -807,7 +869,14 @@ function renderCompare(){
   if (cars.length < 1){ $("cmpdlg").close(); return; }
   const best = (vals, pick) => { const ok = vals.filter(v => v != null); if (ok.length < 2) return null; const b = pick(...ok); return vals.filter(v => v === b).length === ok.length ? null : b; };
   const price = cars.map(c => c.total_price), km = cars.map(c => c.mileage), yr = cars.map(c => c.year), dist = cars.map(distKm), days = cars.map(daysListed);
-  const bP = best(price, Math.min), bK = best(km, Math.min), bY = best(yr, Math.max), bD = best(dist, Math.min);
+  const fees = cars.map(c => c.detail?.fees ?? null), fuels = cars.map(fuel);
+  const bP = best(price, Math.min), bK = best(km, Math.min), bY = best(yr, Math.max), bD = best(dist, Math.min), bF = best(fees, Math.min), bE = best(fuels, Math.max);
+  const grp = (label) => `<tr class="grp"><th colspan="${cars.length + 1}">${label}</th></tr>`;
+  const flag = (c, k) => !c.detail ? `<td class="no">未取得</td>` : yes(c, k) ? `<td class="yes">◯</td>` : `<td class="no">−</td>`;
+  const EQUIP = [["カーナビ","カーナビ"],["ディスプレイオーディオ","ディスプレイオーディオ"],["TV","TV"],["ETC","ETC"],["ドライブレコーダー","ドライブレコーダー"],
+    ["シートヒーター","シートヒーター"],["電動シート","電動シート"],["本革シート","本革シート"],["レーダークルーズ","アダプティブクルーズコントロール"],
+    ["レーンキープ","レーンキープアシスト"],["オートハイビーム","オートマチックハイビーム"],["サンルーフ","サンルーフ・ガラスルーフ"]];
+  const eq = cars.map(equipNames);
   const cell = (v, b, html) => `<td class="${b != null && v === b ? "best" : ""}">${html}</td>`;
   const row = (label, f) => `<tr><th>${label}</th>${cars.map(f).join("")}</tr>`;
   $("cmpBody").innerHTML = `
@@ -819,22 +888,36 @@ function renderCompare(){
       <colgroup><col style="width:120px">${cars.map(() => "<col>").join("")}</colgroup>
       <tr class="head"><th></th>${cars.map(c => `<td><div class="pic" data-detail="${esc(c.id)}">${c.image ? `<img src="${esc(c.image)}" alt="" referrerpolicy="no-referrer">` : ""}</div>
         <div class="name"><small>${esc(nz(c.model))}</small>${esc(nz(c.grade))}</div><button class="rm" data-cmp="${esc(c.id)}">比較から外す</button></td>`).join("")}</tr>
+      ${grp("価格")}
       ${row("支払総額", (c, i) => cell(price[i], bP, `<span class="big">${fmtPrice(c.total_price)}</span>`))}
       ${row("本体価格", c => `<td>${c.base_price == null ? "-" : c.base_price.toFixed(1) + "万円"}</td>`)}
+      ${row("諸費用", (c, i) => cell(fees[i], bF, fees[i] == null ? "-" : fees[i].toFixed(1) + "万円"))}
       ${row("価格の推移", c => `<td>${priceSeries(c).length > 1 ? chartSVG(c, { w: 140, h: 30 }) : '<span style="color:var(--text-3)">変動なし</span>'}</td>`)}
+      ${grp("車の状態")}
       ${row("年式", (c, i) => cell(yr[i], bY, `${esc(c.year ?? "-")}年`))}
       ${row("走行距離", (c, i) => cell(km[i], bK, fmtKm(c.mileage)))}
-      ${row("車検", c => `<td>${esc(nz(c.inspection).replace(/\(R\d+\)/, "").replace(/年(\d+)月/, "/$1") || "-")}</td>`)}
-      ${row("色", c => `<td>${esc(nz(c.color) || "-")}</td>`)}
+      ${row("ワンオーナー", c => flag(c, "ワンオーナー"))}
+      ${row("禁煙車", c => flag(c, "禁煙車"))}
+      ${row("点検記録簿", c => flag(c, "定期点検記録簿"))}
+      ${row("車検", c => `<td>${esc(spec(c, "車検") || nz(c.inspection).replace(/\(R\d+\)/, "").replace(/年(\d+)月/, "/$1") || "-")}</td>`)}
+      ${grp("保証・整備")}
+      ${row("保証", c => `<td>${esc(warrantyShort(c) ?? (nz(c.warranty) || "-"))}</td>`)}
+      ${row("法定整備", c => `<td>${esc(spec(c, "法定整備") || "-")}</td>`)}
+      ${grp("仕様")}
+      ${row("色", c => `<td>${esc(spec(c, "色") || nz(c.color) || "-")}</td>`)}
       ${row("ミッション", c => `<td>${esc(nz(c.mission) || "-")}</td>`)}
-      ${row("保証", c => `<td>${esc(nz(c.warranty) || "-")}</td>`)}
+      ${row("駆動方式", c => `<td>${esc(spec(c, "駆動方式") || "-")}</td>`)}
+      ${row("燃費(WLTC)", (c, i) => cell(fuels[i], bE, esc(spec(c, "WLTC燃費") || "-")))}
+      ${grp("装備")}
+      ${EQUIP.map(([label, key]) => row(label, (c, i) => !c.detail ? `<td class="no">未取得</td>` : eq[i].has(key) ? `<td class="yes">◯</td>` : `<td class="no">−</td>`)).join("")}
+      ${grp("場所・その他")}
       ${row("所在地", c => `<td>${esc(c.pref)}${esc(nz(c.city))}<br><span style="color:var(--text-2);font-size:12px">${esc(nz(c.shop))}</span></td>`)}
       ${row("自宅から", (c, i) => cell(dist[i], bD, esc(distLabel(c))))}
       ${row("掲載確認から", (c, i) => `<td>${days[i] == null ? "-" : days[i] + "日"}</td>`)}
       ${row("状態", c => `<td>${c.status === "ended" ? "掲載終了" : c.tier === "main" ? "本命" : c.tier === "near" ? "惜しい候補" : "掲載中"}</td>`)}
       ${row("メモ", c => `<td style="white-space:pre-wrap">${esc(state.stars[c.id]?.memo || "-")}</td>`)}
     </table></div>
-    <p style="color:var(--text-3);font-size:12px;margin-top:16px">◎ は比べた中で一番良い値（支払総額・走行距離・自宅からの距離は小さい方、年式は新しい方）。</p>`;
+    <p style="color:var(--text-3);font-size:12px;margin-top:16px">◎ は比べた中で一番良い値（支払総額・諸費用・走行距離・自宅からの距離は小さい方、年式は新しい方、燃費は良い方）。◯ はその装備・条件あり、− はなし。</p>`;
 }
 
 // ---------- memo ----------

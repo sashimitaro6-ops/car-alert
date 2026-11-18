@@ -90,13 +90,14 @@ def parse_cards(html: str) -> list[dict]:
         if img_src and img_src.startswith("//"):
             img_src = "https:" + img_src
 
-        # サブ写真（一覧では80x60の縮小版。先頭の S を外すと 640x480 の大きい写真になる）
+        # サブ写真（一覧では80x60の縮小版。ファイル名先頭の S を外すと 640x480 の大きい写真になる。
+        # IDは UZ / U0 / UM / UJ / UT など複数の形式がある）
         photos = []
         for sub in card.select(".cassetteMain__subImg img"):
             src = sub.get("src") or sub.get("data-original") or ""
             if src.startswith("//"):
                 src = "https:" + src
-            big = re.sub(r"/S(UZ\d+_\d+_\d+\.jpg)$", r"/\1", src)
+            big = re.sub(r"/S([A-Z][A-Z0-9]+_\d+_\d+\.jpg)$", r"/\1", src)
             if big:
                 photos.append({"url": big, "caption": sub.get("alt") or ""})
 
