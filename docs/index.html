@@ -71,17 +71,19 @@ a:hover{text-decoration:underline}
 .lnav{position:sticky;top:0;z-index:20;background:var(--nav);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
   border-bottom:1px solid transparent;transition:border-color .3s var(--ease)}
 .lnav.stuck{border-bottom-color:var(--hair)}
-.lnav .wrap{display:flex;align-items:center;gap:12px;height:60px}
-.lnav .ttl{font-size:17px;font-weight:600;white-space:nowrap;opacity:0;transform:translateY(4px);transition:opacity .35s var(--ease),transform .35s var(--ease);pointer-events:none;width:0;overflow:hidden}
-.lnav.stuck .ttl{opacity:1;transform:none;width:auto;margin-right:8px}
-.seg{position:relative;display:flex;background:var(--fill);border-radius:999px;padding:3px}
+.lnav .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;column-gap:16px;height:56px}
+.lnav .ttl{justify-self:start;font-size:17px;font-weight:600;white-space:nowrap;opacity:0;transform:translateY(4px);transition:opacity .35s var(--ease),transform .35s var(--ease);pointer-events:none}
+.lnav.stuck .ttl{opacity:1;transform:none}
+.lnav .totop{justify-self:end;border:none;background:none;color:var(--link);font-size:13px;opacity:0;pointer-events:none;transition:opacity .35s var(--ease);white-space:nowrap}
+.lnav.stuck .totop{opacity:1;pointer-events:auto}
+.seg{position:relative;display:flex;flex-shrink:0;width:max-content;background:var(--fill);border-radius:999px;padding:3px}
 .seg .ind{position:absolute;top:3px;bottom:3px;left:0;border-radius:999px;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.12),0 0 0 .5px rgba(0,0,0,.04);
   transition:transform .45s var(--ease),width .45s var(--ease);will-change:transform}
 .tab{position:relative;z-index:1;border:none;background:none;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:500;color:var(--text-2);white-space:nowrap;transition:color .3s}
 .tab:hover{color:var(--text)}
 .tab.on{color:var(--text);font-weight:600}
 .tab .n{margin-left:5px;color:var(--text-3);font-weight:500;font-variant-numeric:tabular-nums}
-.lnav .sp{flex:1}
+.filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
 .select{position:relative}
 .select select{appearance:none;-webkit-appearance:none;border:none;background:var(--fill);border-radius:999px;padding:7px 30px 7px 14px;font-size:13px;cursor:pointer;transition:background .2s}
 .select select:hover{background:var(--fill-2)}
@@ -89,7 +91,8 @@ a:hover{text-decoration:underline}
 
 /* ---------- section ---------- */
 main{padding:56px 0 40px}
-.sechead{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:28px}
+.sechead{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:28px;flex-wrap:wrap}
+.sechead .right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
 .sechead h2{font-size:40px;line-height:1.1;font-weight:700;letter-spacing:-.02em;margin:0}
 .sechead p{margin:8px 0 0;color:var(--text-2);font-size:17px}
 .sechead .count{font-size:14px;color:var(--text-3);white-space:nowrap}
@@ -196,7 +199,8 @@ dialog .row{display:flex;gap:10px;justify-content:flex-end;margin-top:28px}
 }
 @media (max-width: 900px){
   .hero h1{font-size:44px} .stats{grid-template-columns:repeat(2,1fr);row-gap:28px} .stat:nth-child(3){border-left:none}
-  .lnav .wrap{height:auto;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+  .lnav .wrap{grid-template-columns:1fr} .lnav .ttl,.lnav .totop{display:none} .lnav .seg{justify-self:center}
+  .sechead .right{align-items:flex-start}
 }
 </style>
 </head>
@@ -226,22 +230,8 @@ dialog .row{display:flex;gap:10px;justify-content:flex-end;margin-top:28px}
 <div class="lnav" id="lnav">
   <div class="wrap">
     <span class="ttl">中古車ウォッチ</span>
-    <div class="seg"><span class="ind" id="ind"></span><div id="tabs" style="display:flex"></div></div>
-    <span class="sp"></span>
-    <label class="select"><select id="model" aria-label="車種">
-      <option value="">全車種</option>
-      <option value="MAZDA3">MAZDA3</option>
-      <option value="CX-30">CX-30</option>
-    </select></label>
-    <label class="select"><select id="pref" aria-label="地域"><option value="">全地域</option></select></label>
-    <label class="select"><select id="sort" aria-label="並べ替え">
-      <option value="price">支払総額が安い順</option>
-      <option value="new">新着順</option>
-      <option value="km">走行距離が少ない順</option>
-      <option value="year">年式が新しい順</option>
-      <option value="dist">自宅から近い順</option>
-      <option value="days">掲載が長い順</option>
-    </select></label>
+    <div class="seg" role="tablist" aria-label="表示する車"><span class="ind" id="ind"></span><div id="tabs" style="display:flex"></div></div>
+    <button class="totop" id="totop">トップへ ↑</button>
   </div>
 </div>
 
@@ -250,7 +240,25 @@ dialog .row{display:flex;gap:10px;justify-content:flex-end;margin-top:28px}
     <div id="warn"></div>
     <div class="sechead" id="list-top">
       <div><h2 id="secTitle"></h2><p id="secDesc"></p></div>
-      <span class="count" id="secCount"></span>
+      <div class="right">
+        <div class="filters">
+        <label class="select"><select id="model" aria-label="車種">
+        <option value="">全車種</option>
+        <option value="MAZDA3">MAZDA3</option>
+        <option value="CX-30">CX-30</option>
+        </select></label>
+        <label class="select"><select id="pref" aria-label="地域"><option value="">全地域</option></select></label>
+        <label class="select"><select id="sort" aria-label="並べ替え">
+        <option value="price">支払総額が安い順</option>
+        <option value="new">新着順</option>
+        <option value="km">走行距離が少ない順</option>
+        <option value="year">年式が新しい順</option>
+        <option value="dist">自宅から近い順</option>
+        <option value="days">掲載が長い順</option>
+        </select></label>
+        </div>
+        <span class="count" id="secCount"></span>
+      </div>
     </div>
     <div class="grid" id="grid"></div>
   </div>
@@ -439,7 +447,7 @@ function render(animate = false){
   const TABS = tabsDef();
   $("tabs").innerHTML = TABS.map(([k,label,f]) => {
     const n = cars.filter(c => f(c) && match(c)).length;
-    return `<button class="tab ${state.tab===k?"on":""}" data-tab="${k}">${label}<span class="n">${n}</span></button>`;
+    return `<button class="tab ${state.tab===k?"on":""}" data-tab="${k}" role="tab" aria-selected="${state.tab===k}">${label}<span class="n">${n}</span></button>`;
   }).join("");
   moveIndicator(animate);
 
@@ -460,9 +468,20 @@ function render(animate = false){
   $("secDesc").textContent = desc;
   $("secCount").textContent = `${list.length}台`;
   $("grid").innerHTML = list.length ? list.map(c => card(c, animate)).join("") :
-    `<div class="empty"><div class="big">${state.tab==="star" ? "まだ保存した車はありません。" : "該当する車はありません。"}</div>${state.tab==="star" ? "気になる車の ☆ を押すと、ここに集まります。" : "条件や絞り込みを変えてみてください。"}</div>`;
+    emptyHtml(model || pref);
   if (animate) reveal();
   state.popped = null;
+}
+
+function emptyHtml(filtered){
+  const [big, small] = filtered ? ["該当する車はありません。", "車種や地域の絞り込みを「すべて」に戻してみてください。"] : ({
+    main: ["今は本命の車がありません。", "新しく見つかったら、21時のメールでお知らせします。"],
+    near: ["今は惜しい候補がありません。", "新しく見つかったら、21時のメールでお知らせします。"],
+    star: ["まだ保存した車はありません。", "気になる車の ☆ を押すと、ここに集まります。"],
+    all: ["今は掲載中の車がありません。", "取得に失敗している可能性があります。21時のメールを確認してください。"],
+    ended: ["まだ掲載終了になった車はありません。", "売れた車は、ここに自動で移ります。"],
+  })[state.tab];
+  return `<div class="empty"><div class="big">${big}</div>${small}</div>`;
 }
 
 // セグメントの白いつまみを、選択中のタブまでスライドさせる
@@ -651,6 +670,9 @@ $("saveSettings").onclick = async () => {
   await loadStars(); renderHeader(); render();
 };
 window.addEventListener("resize", () => moveIndicator(false));
+$("totop").onclick = () => window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+// フォントの読み込みなどでタブの幅が変わったら、つまみの位置を合わせ直す
+if ("ResizeObserver" in window) new ResizeObserver(() => moveIndicator(false)).observe($("tabs"));
 
 // ヒーローが画面から消えたら、上部バーに区切り線とタイトルを出す
 new IntersectionObserver(([e]) => $("lnav").classList.toggle("stuck", !e.isIntersecting), { rootMargin: "-1px 0px 0px 0px" })
