@@ -52,18 +52,18 @@ a:hover{text-decoration:underline}
 .iconbtn:hover{background:var(--fill);color:var(--text)}
 
 /* ---------- hero ---------- */
-.hero{text-align:center;padding:88px 0 56px}
+.hero{text-align:center;padding:56px 0 40px}
 .eyebrow{font-size:17px;font-weight:600;color:var(--near);margin:0 0 10px;letter-spacing:.01em}
-.hero h1{font-size:64px;line-height:1.06;font-weight:700;letter-spacing:-.025em;margin:0}
-.hero .lead{font-size:21px;line-height:1.5;color:var(--text-2);margin:20px auto 0;max-width:860px;font-weight:400;text-wrap:balance}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);margin:56px auto 0;max-width:960px}
+.hero h1{font-size:52px;line-height:1.06;font-weight:700;letter-spacing:-.025em;margin:0}
+.hero .lead{font-size:19px;line-height:1.5;color:var(--text-2);margin:14px auto 0;max-width:860px;font-weight:400;text-wrap:balance}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);margin:36px auto 0;max-width:920px}
 .stat{padding:4px 12px;border-left:1px solid var(--hair)}
 .stat:first-child{border-left:none}
 .stat .lbl{font-size:13px;color:var(--text-2);font-weight:500}
-.stat .val{font-size:48px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-top:6px;font-variant-numeric:tabular-nums}
+.stat .val{font-size:40px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-top:6px;font-variant-numeric:tabular-nums}
 .stat .val small{font-size:19px;font-weight:600;margin-left:2px;letter-spacing:0}
 .stat.good .val{color:var(--main)} .stat.red .val{color:var(--drop)}
-.market{margin:36px auto 0;display:flex;justify-content:center;gap:28px;flex-wrap:wrap;font-size:14px;color:var(--text-2)}
+.market{margin:24px auto 0;display:flex;justify-content:center;gap:28px;flex-wrap:wrap;font-size:14px;color:var(--text-2)}
 .market b{color:var(--text);font-weight:600}
 .updated{margin-top:14px;font-size:12px;color:var(--text-3)}
 
@@ -90,7 +90,7 @@ a:hover{text-decoration:underline}
 .select::after{content:"";position:absolute;right:13px;top:50%;width:6px;height:6px;border-right:1.5px solid var(--text-2);border-bottom:1.5px solid var(--text-2);transform:translateY(-70%) rotate(45deg);pointer-events:none}
 
 /* ---------- section ---------- */
-main{padding:56px 0 40px}
+main{padding:44px 0 40px}
 .sechead{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:28px;flex-wrap:wrap}
 .sechead .right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
 .sechead h2{font-size:40px;line-height:1.1;font-weight:700;letter-spacing:-.02em;margin:0}
@@ -98,6 +98,78 @@ main{padding:56px 0 40px}
 .sechead .count{font-size:14px;color:var(--text-3);white-space:nowrap}
 .notice{display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:18px;padding:14px 20px;margin-bottom:28px;font-size:14px;color:var(--text-2);box-shadow:var(--shadow)}
 .notice button{margin-left:auto}
+.notice .x{margin-left:4px;width:28px;height:28px;border-radius:50%;border:none;background:none;color:var(--text-3);font-size:18px;line-height:1}
+.notice .x:hover{background:var(--fill);color:var(--text)}
+.thumb{cursor:zoom-in}
+.title a{cursor:pointer}
+.spark{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-2)}
+.spark svg{display:block;overflow:visible}
+.foot .l{display:flex;gap:10px;flex-wrap:wrap}
+.cmp{border:1px solid var(--hair);background:none;border-radius:999px;padding:2px 10px;font-size:12px;color:var(--text-2);white-space:nowrap;transition:all .2s}
+.cmp:hover{border-color:var(--link);color:var(--link)}
+.cmp.on{background:var(--link);border-color:var(--link);color:#fff}
+
+/* detail sheet */
+dialog.sheet{width:min(1060px,94vw);max-height:90vh;padding:0;overflow:auto;border-radius:28px}
+.sheet .close{position:sticky;top:16px;float:right;margin:16px 16px 0 0;z-index:3;width:36px;height:36px;border-radius:50%;border:none;
+  background:var(--fill-2);color:var(--text);font-size:20px;line-height:36px;backdrop-filter:blur(10px)}
+.sheet .close:hover{background:var(--fill)}
+.dgrid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:36px;padding:40px 40px 8px}
+.gallery{position:sticky;top:24px;align-self:start}
+.gallery .main{position:relative;aspect-ratio:4/3;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,var(--fill),var(--fill-2))}
+.gallery .main img{width:100%;height:100%;object-fit:cover;display:block;animation:fade .45s var(--ease)}
+.gallery .nav{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,.8);
+  backdrop-filter:blur(10px);font-size:20px;color:#1d1d1f;opacity:0;transition:opacity .3s}
+.gallery .main:hover .nav{opacity:1}
+.gallery .prev{left:12px} .gallery .next{right:12px}
+.gallery .cap{min-height:2.9em;font-size:12px;color:var(--text-2);margin:10px 2px 0;line-height:1.5}
+.thumbs{display:flex;gap:8px;margin-top:10px}
+.thumbs button{flex:1;aspect-ratio:4/3;border:none;padding:0;border-radius:10px;overflow:hidden;background:var(--fill);opacity:.55;outline:2px solid transparent;outline-offset:2px;transition:opacity .2s,outline-color .2s}
+.thumbs button.on{opacity:1;outline-color:var(--link)}
+.thumbs button:hover{opacity:1}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.dinfo .badges{position:static;margin-bottom:12px}
+.dinfo .badge{background:var(--fill)}
+.dinfo h2{font-size:30px;line-height:1.2;font-weight:700;letter-spacing:-.02em;margin:4px 0 14px}
+.dinfo .price .total{font-size:44px}
+.dinfo .actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 6px}
+.dinfo .actions .btn{display:inline-flex;align-items:center;gap:6px}
+.dinfo .actions a.btn:hover{text-decoration:none}
+.dtable{width:100%;border-collapse:collapse;margin-top:18px;font-size:14px}
+.dtable th{text-align:left;font-weight:400;color:var(--text-2);padding:9px 12px 9px 0;width:34%;border-top:1px solid var(--hair);vertical-align:top}
+.dtable td{padding:9px 0;border-top:1px solid var(--hair)}
+.dsec{padding:24px 40px 0}
+.dsec:last-child{padding-bottom:40px}
+.dsec h3{font-size:21px;font-weight:700;letter-spacing:-.015em;margin:0 0 12px}
+.dsec .txt{color:var(--text-2);font-size:14px;line-height:1.7;white-space:pre-wrap}
+.chartbox{background:var(--surface-2);border:1px solid var(--hair);border-radius:18px;padding:18px 20px}
+.chartbox svg{display:block;width:100%;height:auto;overflow:visible}
+
+/* compare */
+.tray{position:fixed;left:50%;bottom:24px;transform:translate(-50%,140%);z-index:30;display:flex;align-items:center;gap:14px;padding:10px 12px 10px 18px;border-radius:999px;
+  background:var(--nav);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);box-shadow:0 10px 40px rgba(0,0,0,.18);
+  transition:transform .5s var(--ease)}
+.tray.show{transform:translate(-50%,0)}
+.tray .pics{display:flex}
+.tray .pics span{width:34px;height:34px;border-radius:50%;overflow:hidden;border:2px solid var(--surface);margin-left:-8px;background:var(--fill-2)}
+.tray .pics span:first-child{margin-left:0}
+.tray .pics img{width:100%;height:100%;object-fit:cover}
+.tray .lbl{font-size:14px;font-weight:600;white-space:nowrap}
+dialog.cmpdlg{width:min(1180px,96vw);max-height:90vh;overflow:auto;padding:40px}
+.ctable{width:100%;border-collapse:separate;border-spacing:0;font-size:14px;table-layout:fixed}
+.ctable th{text-align:left;font-weight:400;color:var(--text-2);width:120px;padding:10px 12px 10px 0;border-top:1px solid var(--hair);vertical-align:top}
+.ctable td{padding:10px 14px;border-top:1px solid var(--hair);vertical-align:top}
+.ctable tr.head td{border-top:none;padding-top:0}
+.ctable .pic{aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:var(--fill);margin-bottom:10px;cursor:zoom-in}
+.ctable .pic img{width:100%;height:100%;object-fit:cover;display:block}
+.ctable .name{font-weight:600;line-height:1.35}
+.ctable .name small{display:block;font-weight:500;color:var(--text-2);font-size:12px;margin-bottom:2px}
+.ctable .best{color:var(--main);font-weight:700}
+.ctable .best::after{content:"  ◎";font-size:11px}
+.ctable .big{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.ctable .rm{border:none;background:none;color:var(--text-3);font-size:12px;padding:0;margin-top:8px}
+.ctable .rm:hover{color:var(--drop)}
+@media (max-width: 900px){ .dgrid{grid-template-columns:1fr;padding:28px 24px 0} .dsec{padding:20px 24px 0} }
 
 /* ---------- cards ---------- */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px}
@@ -281,11 +353,15 @@ dialog .row{display:flex;gap:10px;justify-content:flex-end;margin-top:28px}
     <button class="btn primary" id="saveSettings">保存</button>
   </div>
 </dialog>
+<dialog id="detail" class="sheet" aria-label="車の詳細"><div id="detailBody"></div></dialog>
+<dialog id="cmpdlg" class="cmpdlg" aria-label="比較"><div id="cmpBody"></div></dialog>
+<div class="tray" id="tray"></div>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
 const STAR_PATH = "docs/data/stars.json";
-const state = { data: null, stars: {}, starsSha: null, tab: "main", busy: new Set(), popped: null };
+const state = { data: null, stars: {}, starsSha: null, tab: "main", busy: new Set(), popped: null, detailId: null, photoIdx: 0,
+  compare: new Set((() => { try { return JSON.parse(localStorage.getItem("compare") || "[]"); } catch { return []; } })()) };
 const $ = (id) => document.getElementById(id);
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -404,7 +480,7 @@ async function toggleStar(id){
   state.busy.delete(id); render();
 }
 function snapshot(c){
-  const keys = ["id","model","grade","catch","total_price","base_price","year","mileage","color","pref","city","shop","image","url","body","mission","repair","inspection"];
+  const keys = ["id","model","grade","catch","total_price","base_price","year","mileage","color","pref","city","shop","image","photos","url","body","mission","repair","inspection","warranty","displacement","first_seen","price_history"];
   return Object.fromEntries(keys.map(k => [k, c[k]]));
 }
 
@@ -470,6 +546,7 @@ function render(animate = false){
   $("grid").innerHTML = list.length ? list.map(c => card(c, animate)).join("") :
     emptyHtml(model || pref);
   if (animate) reveal();
+  renderDetail(); renderCompare(); renderTray();
   state.popped = null;
 }
 
@@ -524,10 +601,6 @@ function card(c, animate){
     if (isNew(c)) badges.push(`<span class="badge b-new">NEW</span>`);
     if (drop) badges.push(`<span class="badge b-drop">値下げ</span>`);
   }
-  const hist = (c.price_history || []);
-  const histHtml = hist.length > 1 ? `<details><summary>価格の履歴（${hist.length}件）</summary><table>${
-    hist.map(h => `<tr><td>${esc(h.date)}</td><td>総額 ${h.total==null?"記載なし":h.total.toFixed(1)+"万円"}</td><td>本体 ${h.base==null?"-":h.base.toFixed(1)+"万円"}</td></tr>`).join("")
-  }</table></details>` : "";
   const chips = [];
   if (drop) chips.push(`<span class="chip drop">▼ ${drop.amount.toFixed(1)}万円値下げ（${esc(drop.date.slice(5).replace("-","/"))}）</span>`);
   (c.near_reasons || []).forEach(r => chips.push(`<span class="chip reason">${esc(r)}</span>`));
@@ -535,16 +608,17 @@ function card(c, animate){
   const mission = nz(c.mission || "").replace(/フロア|コラム|インパネ|MTモード付/g,"").trim() || "-";
   const insp = nz(c.inspection).replace(/\(R\d+\)/, "").replace(/年(\d+)月/, "/$1") || "-";
   return `<article class="card ${c.status==="ended"?"ended":""} ${animate?"pre":""}">
-    <a class="thumb" href="${esc(c.url)}" target="_blank" rel="noopener" tabindex="-1">
+    <a class="thumb" href="${esc(c.url)}" data-detail="${esc(c.id)}" tabindex="-1" title="詳細を見る">
       ${c.image ? `<img src="${esc(c.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ""}
       <div class="badges">${badges.join("")}</div>
     </a>
     <button class="starbtn ${starred?"on":""} ${state.popped===c.id?"pop":""}" data-star="${esc(c.id)}" aria-label="${starred?"保存を解除":"保存する"}" title="${starred?"保存を解除":"保存する"}" ${state.busy.has(c.id)?"disabled":""}>${STAR_SVG(starred)}</button>
     <div class="body">
       <div class="cmodel">${esc(nz(c.model))}</div>
-      <h3 class="title"><a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(nz(c.grade))}</a></h3>
+      <h3 class="title"><a href="${esc(c.url)}" data-detail="${esc(c.id)}">${esc(nz(c.grade))}</a></h3>
       <div class="price"><span class="total">${fmtPrice(c.total_price)}</span><span class="base">支払総額・本体 ${c.base_price==null?"-":c.base_price.toFixed(1)+"万円"}</span></div>
       ${chips.join("")}
+      ${starred && priceSeries(c).length > 1 ? `<div class="spark">${chartSVG(c, {w:150, h:30})}<span>価格の推移</span></div>` : ""}
       <dl class="specs">
         <div><dt>年式</dt><dd>${esc(c.year ?? "-")}年</dd></div>
         <div><dt>走行距離</dt><dd>${fmtKm(c.mileage)}</dd></div>
@@ -557,18 +631,183 @@ function card(c, animate){
       <div class="catch">${esc(nz(c.catch))}</div>
       ${starred ? memoHtml(c.id) : ""}
       ${endedNote}
-      ${histHtml}
       <div class="foot">${footHtml(c)}</div>
     </div>
   </article>`;
 }
 
+function distLabel(c){
+  const km = distKm(c);
+  if (km == null) return "-";
+  return c.pref === homePref() ? "自宅と同じ府県" : `自宅から約${Math.max(10, Math.round(km/10)*10)}km`;
+}
 function footHtml(c){
   const d = daysListed(c), km = distKm(c);
   const dayTxt = d == null ? "<span></span>" : `<span class="${d >= 30 ? "old" : ""}" title="このツールで初めて確認した日：${esc(c.first_seen)}">掲載確認から${d}日${d >= 30 ? "・長期" : ""}</span>`;
-  const kmTxt = km == null ? (homePref() ? "" : `<span>設定で自宅を登録すると距離を表示</span>`)
-    : `<span title="県庁所在地どうしの直線距離の目安">${c.pref === homePref() ? "自宅と同じ府県" : `自宅から約${Math.max(10, Math.round(km/10)*10)}km`}</span>`;
-  return dayTxt + kmTxt;
+  const kmTxt = km == null ? "" : `<span title="県庁所在地どうしの直線距離の目安">${distLabel(c)}</span>`;
+  const on = state.compare.has(c.id);
+  return `<span class="l">${dayTxt}${kmTxt}</span><button class="cmp ${on?"on":""}" data-cmp="${esc(c.id)}">${on ? "✓ 比較中" : "＋ 比較"}</button>`;
+}
+
+// ---------- price chart ----------
+// 価格は変わるまで同じ値が続くので、階段状の線で描く。掲載中なら最終更新日まで線を伸ばす
+function priceSeries(c){
+  const pts = (c.price_history || []).map(h => ({ d: h.date, v: h.total ?? h.base })).filter(p => p.v != null);
+  return pts;
+}
+function chartSVG(c, { w = 150, h = 30, axes = false } = {}){
+  const pts = priceSeries(c);
+  if (!pts.length) return "";
+  const end = c.status === "ended" ? (c.ended_on || pts[pts.length-1].d) : (updDate() || pts[pts.length-1].d);
+  const series = [...pts]; if (end > pts[pts.length-1].d) series.push({ d: end, v: pts[pts.length-1].v, tail: true });
+  const t = (d) => new Date(d).getTime();
+  const x0 = t(series[0].d), x1 = Math.max(t(series[series.length-1].d), x0 + 86400000);
+  let lo = Math.min(...series.map(p => p.v)), hi = Math.max(...series.map(p => p.v));
+  const pad = Math.max((hi - lo) * 0.25, 2); lo -= pad; hi += pad;
+  const L = axes ? 56 : 2, R = axes ? 16 : 2, T = axes ? 14 : 3, B = axes ? 28 : 3;
+  const X = (d) => L + (t(d) - x0) / (x1 - x0) * (w - L - R);
+  const Y = (v) => T + (hi - v) / (hi - lo) * (h - T - B);
+  let path = `M${X(series[0].d)},${Y(series[0].v)}`;
+  for (let i = 1; i < series.length; i++) path += ` H${X(series[i].d)} V${Y(series[i].v)}`;
+  const down = pts[pts.length-1].v < pts[0].v, up = pts[pts.length-1].v > pts[0].v;
+  const col = down ? "var(--drop)" : up ? "var(--near)" : "var(--text-2)";
+  const dots = pts.map((p, i) => `<circle cx="${X(p.d)}" cy="${Y(p.v)}" r="${axes ? (i === pts.length-1 ? 5 : 3.5) : (i === pts.length-1 ? 2.6 : 0)}" fill="${i === pts.length-1 ? col : "var(--surface)"}" stroke="${col}" stroke-width="${axes ? 2 : 0}"/>`).join("");
+  let extra = "";
+  if (axes){
+    const ticks = [hi - pad, lo + pad].filter((v, i, a) => a.indexOf(v) === i);
+    extra += ticks.map(v => `<line x1="${L}" x2="${w-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--hair)"/><text x="${L-10}" y="${Y(v)+4}" text-anchor="end" font-size="12" fill="var(--text-3)">${v.toFixed(1)}</text>`).join("");
+    const fmt = (d) => d.slice(5).replace("-", "/");
+    extra += `<text x="${L}" y="${h-6}" font-size="12" fill="var(--text-3)">${fmt(series[0].d)}</text><text x="${w-R}" y="${h-6}" text-anchor="end" font-size="12" fill="var(--text-3)">${fmt(series[series.length-1].d)}</text>`;
+    extra += pts.map((p, i) => i === 0 || p.v === pts[i-1].v ? "" : `<text x="${X(p.d)+8}" y="${Y(p.v)-9}" font-size="12" font-weight="600" fill="${p.v < pts[i-1].v ? "var(--drop)" : "var(--near)"}">${p.v < pts[i-1].v ? "▼" : "▲"}${Math.abs(p.v - pts[i-1].v).toFixed(1)}</text>`).join("");
+  }
+  return `<svg viewBox="0 0 ${w} ${h}" ${axes ? "" : `width="${w}" height="${h}"`} role="img" aria-label="価格の推移">${extra}<path d="${path}" fill="none" stroke="${col}" stroke-width="${axes ? 2.5 : 1.8}" stroke-linejoin="round" stroke-linecap="round"/>${dots}</svg>`;
+}
+
+// ---------- detail ----------
+const findCar = (id) => allCars().find(c => c.id === id);
+function photosOf(c){
+  const list = [];
+  if (c.image) list.push({ url: c.image, caption: "" });
+  (c.photos || []).forEach(p => list.push(p));
+  return list;
+}
+function openDetail(id){
+  state.detailId = id; state.photoIdx = 0;
+  renderDetail();
+  if (!$("detail").open) $("detail").showModal();
+  $("detail").scrollTop = 0;
+}
+function renderDetail(){
+  const dlg = $("detail");
+  if (!state.detailId || (!dlg.open && state.detailId == null)) return;
+  const c = findCar(state.detailId); if (!c){ dlg.close(); return; }
+  const starred = !!state.stars[c.id], drop = lastDrop(c), photos = photosOf(c);
+  const i = Math.min(state.photoIdx, Math.max(0, photos.length - 1)), ph = photos[i];
+  const badges = [];
+  if (c.status === "ended") badges.push(`<span class="badge b-ended">掲載終了</span>`);
+  if (c.status !== "ended" && c.tier === "main") badges.push(`<span class="badge b-main">本命</span>`);
+  if (c.status !== "ended" && c.tier === "near") badges.push(`<span class="badge b-near">惜しい</span>`);
+  if (c.status !== "ended" && isNew(c)) badges.push(`<span class="badge b-new">NEW</span>`);
+  const chips = [];
+  if (drop) chips.push(`<span class="chip drop">▼ ${drop.amount.toFixed(1)}万円値下げ（${esc(drop.date.slice(5).replace("-","/"))}）</span>`);
+  (c.near_reasons || []).forEach(r => chips.push(`<span class="chip reason">${esc(r)}</span>`));
+  const d = daysListed(c);
+  const rows = [
+    ["年式", `${esc(c.year ?? "-")}年`], ["走行距離", fmtKm(c.mileage)], ["車検", esc(nz(c.inspection) || "-")],
+    ["色", esc(nz(c.color) || "-")], ["ミッション", esc(nz(c.mission) || "-")], ["排気量", esc(nz(c.displacement) || "-")],
+    ["ボディ", esc(nz(c.body) || "-")], ["修復歴", esc(c.repair || "-")], ["保証", esc(nz(c.warranty) || "-")],
+    ["所在地", `${esc(c.pref)}${esc(nz(c.city))}`], ["販売店", esc(nz(c.shop) || "-")],
+    ["自宅から", distKm(c) == null ? `<a href="#" data-open-settings>自宅を設定する</a>` : esc(distLabel(c))],
+    ["掲載確認", c.first_seen ? `${esc(c.first_seen)}（${d}日前から）` : "-"],
+  ];
+  if (c.status === "ended" && c.ended_on) rows.push(["掲載終了", esc(c.ended_on)]);
+  const n = priceSeries(c).length;
+  const cmpOn = state.compare.has(c.id);
+  $("detailBody").innerHTML = `
+  <button class="close" data-close aria-label="閉じる">×</button>
+  <div class="dgrid">
+    <div class="gallery">
+      <div class="main">${ph ? `<img src="${esc(ph.url)}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">` : ""}
+        ${photos.length > 1 ? `<button class="nav prev" data-photo="${(i - 1 + photos.length) % photos.length}" aria-label="前の写真">‹</button><button class="nav next" data-photo="${(i + 1) % photos.length}" aria-label="次の写真">›</button>` : ""}</div>
+      <div class="cap">${esc(nz(ph?.caption || ""))}</div>
+      ${photos.length > 1 ? `<div class="thumbs">${photos.map((p, k) => `<button class="${k===i?"on":""}" data-photo="${k}" aria-label="写真${k+1}"><img src="${esc(p.url)}" alt="" loading="lazy" referrerpolicy="no-referrer"></button>`).join("")}</div>` : ""}
+    </div>
+    <div class="dinfo">
+      <div class="badges">${badges.join("")}</div>
+      <div class="cmodel">${esc(nz(c.model))}</div>
+      <h2>${esc(nz(c.grade))}</h2>
+      <div class="price"><span class="total">${fmtPrice(c.total_price)}</span><span class="base">支払総額・本体 ${c.base_price==null?"-":c.base_price.toFixed(1)+"万円"}</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">${chips.join("")}</div>
+      <div class="actions">
+        <button class="btn ${starred?"":"primary"}" data-star="${esc(c.id)}" ${state.busy.has(c.id)?"disabled":""}>${starred ? "★ 保存済み" : "☆ 保存する"}</button>
+        <button class="btn" data-cmp="${esc(c.id)}">${cmpOn ? "✓ 比較中" : "＋ 比較に追加"}</button>
+        <a class="btn" href="${esc(c.url)}" target="_blank" rel="noopener">カーセンサーで見る ↗</a>
+      </div>
+      <table class="dtable">${rows.map(([k,v]) => `<tr><th>${k}</th><td>${v}</td></tr>`).join("")}</table>
+    </div>
+  </div>
+  <section class="dsec"><h3>価格の推移</h3><div class="chartbox">${
+    n > 1 ? chartSVG(c, { w: 960, h: 220, axes: true })
+          : `<div class="txt">まだ価格の変動はありません。${c.first_seen ? `${esc(c.first_seen)} に ${fmtPrice(priceSeries(c)[0]?.v).replace(/<[^>]+>/g,"")} で確認して以来、同じ価格です。` : ""}値下げされると、ここにグラフで表示されます。</div>`
+  }</div></section>
+  ${starred ? `<section class="dsec"><h3>メモ</h3>${memoHtml(c.id)}</section>` : ""}
+  <section class="dsec"><h3>販売店のコメント</h3><div class="txt">${esc(nz(c.catch) || "なし")}</div></section>`;
+}
+
+// ---------- compare ----------
+function saveCompare(){ safeSet("compare", JSON.stringify([...state.compare])); }
+function toggleCompare(id){
+  if (state.compare.has(id)) state.compare.delete(id);
+  else {
+    if (state.compare.size >= 4){ toast("比較できるのは4台までです", 3000); return; }
+    state.compare.add(id);
+  }
+  saveCompare(); render();
+}
+function renderTray(){
+  const ids = [...state.compare].filter(id => findCar(id));
+  const tray = $("tray");
+  tray.classList.toggle("show", ids.length > 0);
+  if (!ids.length) return;
+  tray.innerHTML = `<span class="pics">${ids.map(id => { const c = findCar(id); return `<span>${c.image ? `<img src="${esc(c.image)}" alt="" referrerpolicy="no-referrer">` : ""}</span>`; }).join("")}</span>
+    <span class="lbl">${ids.length}台を選択中</span>
+    <button class="btn sm" data-cmp-clear>クリア</button>
+    <button class="btn sm primary" data-cmp-open ${ids.length < 2 ? "disabled title='2台以上選んでください'" : ""}>比較する</button>`;
+}
+function renderCompare(){
+  if (!$("cmpdlg").open) return;
+  const cars = [...state.compare].map(findCar).filter(Boolean);
+  if (cars.length < 1){ $("cmpdlg").close(); return; }
+  const best = (vals, pick) => { const ok = vals.filter(v => v != null); if (ok.length < 2) return null; const b = pick(...ok); return vals.filter(v => v === b).length === ok.length ? null : b; };
+  const price = cars.map(c => c.total_price), km = cars.map(c => c.mileage), yr = cars.map(c => c.year), dist = cars.map(distKm), days = cars.map(daysListed);
+  const bP = best(price, Math.min), bK = best(km, Math.min), bY = best(yr, Math.max), bD = best(dist, Math.min);
+  const cell = (v, b, html) => `<td class="${b != null && v === b ? "best" : ""}">${html}</td>`;
+  const row = (label, f) => `<tr><th>${label}</th>${cars.map(f).join("")}</tr>`;
+  $("cmpBody").innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+      <h2 style="margin:0">比較</h2>
+      <div style="display:flex;gap:10px"><button class="btn" data-cmp-clear>すべて外す</button><button class="btn" data-close>閉じる</button></div>
+    </div>
+    <table class="ctable">
+      <colgroup><col style="width:120px">${cars.map(() => "<col>").join("")}</colgroup>
+      <tr class="head"><th></th>${cars.map(c => `<td><div class="pic" data-detail="${esc(c.id)}">${c.image ? `<img src="${esc(c.image)}" alt="" referrerpolicy="no-referrer">` : ""}</div>
+        <div class="name"><small>${esc(nz(c.model))}</small>${esc(nz(c.grade))}</div><button class="rm" data-cmp="${esc(c.id)}">比較から外す</button></td>`).join("")}</tr>
+      ${row("支払総額", (c, i) => cell(price[i], bP, `<span class="big">${fmtPrice(c.total_price)}</span>`))}
+      ${row("本体価格", c => `<td>${c.base_price == null ? "-" : c.base_price.toFixed(1) + "万円"}</td>`)}
+      ${row("価格の推移", c => `<td>${priceSeries(c).length > 1 ? chartSVG(c, { w: 140, h: 30 }) : '<span style="color:var(--text-3)">変動なし</span>'}</td>`)}
+      ${row("年式", (c, i) => cell(yr[i], bY, `${esc(c.year ?? "-")}年`))}
+      ${row("走行距離", (c, i) => cell(km[i], bK, fmtKm(c.mileage)))}
+      ${row("車検", c => `<td>${esc(nz(c.inspection).replace(/\(R\d+\)/, "").replace(/年(\d+)月/, "/$1") || "-")}</td>`)}
+      ${row("色", c => `<td>${esc(nz(c.color) || "-")}</td>`)}
+      ${row("ミッション", c => `<td>${esc(nz(c.mission) || "-")}</td>`)}
+      ${row("保証", c => `<td>${esc(nz(c.warranty) || "-")}</td>`)}
+      ${row("所在地", c => `<td>${esc(c.pref)}${esc(nz(c.city))}<br><span style="color:var(--text-2);font-size:12px">${esc(nz(c.shop))}</span></td>`)}
+      ${row("自宅から", (c, i) => cell(dist[i], bD, esc(distLabel(c))))}
+      ${row("掲載確認から", (c, i) => `<td>${days[i] == null ? "-" : days[i] + "日"}</td>`)}
+      ${row("状態", c => `<td>${c.status === "ended" ? "掲載終了" : c.tier === "main" ? "本命" : c.tier === "near" ? "惜しい候補" : "掲載中"}</td>`)}
+      ${row("メモ", c => `<td style="white-space:pre-wrap">${esc(state.stars[c.id]?.memo || "-")}</td>`)}
+    </table>
+    <p style="color:var(--text-3);font-size:12px;margin-top:16px">◎ は比べた中で一番良い値（支払総額・走行距離・自宅からの距離は小さい方、年式は新しい方）。</p>`;
 }
 
 // ---------- memo ----------
@@ -581,8 +820,8 @@ function memoHtml(id){
   return memo ? `<div class="memo" data-memo-edit="${esc(id)}" title="クリックして編集">${esc(memo)}</div>`
               : `<div class="memo emptymemo" data-memo-edit="${esc(id)}">＋ メモを追加</div>`;
 }
-async function saveMemo(id){
-  const text = (document.querySelector(`[data-memo-input="${CSS.escape(id)}"]`)?.value || "").trim();
+async function saveMemo(id, btn){
+  const text = (btn?.closest(".memo")?.querySelector("textarea")?.value || "").trim();
   state.busy.add(id); render();
   try {
     await saveStars(`📝 ${state.data.cars[id]?.model || id}`, (s) => { if (s[id]) { if (text) s[id].memo = text; else delete s[id].memo; } });
@@ -629,7 +868,7 @@ function renderHeader(){
   const cur = $("pref").value;
   $("pref").innerHTML = `<option value="">全地域</option>` + prefs.map(p => `<option ${p===cur?"selected":""}>${esc(p)}</option>`).join("");
   if (k) $("cond").textContent = `本命：${k.year_min}年以降・修復歴なし・全方位カメラ・ガソリン車（e-SKYACTIV X含む）・支払総額${k.main_total_price_max}万円以内・${k.main_mileage_max}万km以内。惜しい候補：支払総額${k.near_total_price_max}万円以内・${k.near_mileage_max}万km以内。地域：${k.prefs.join("・")}。情報元：カーセンサー。掲載内容は必ず販売店でご確認ください。`;
-  $("warn").innerHTML = (!settings.token) ? `<div class="notice">★で車を保存するには、GitHubのトークンを登録してください。<button class="btn sm primary" data-open-settings>設定を開く</button></div>` : "";
+  $("warn").innerHTML = (!settings.token && !safeGet("hideNotice")) ? `<div class="notice">★で車を保存するには、このブラウザにGitHubのトークンを登録してください。<button class="btn sm primary" data-open-settings>設定を開く</button><button class="x" data-dismiss-notice title="閉じる" aria-label="閉じる">×</button></div>` : "";
 }
 
 // ---------- events ----------
@@ -637,9 +876,18 @@ document.addEventListener("click", (e) => {
   const t = e.target.closest("[data-tab]"); if (t){ if (state.tab !== t.dataset.tab){ state.tab = t.dataset.tab; scrollToList(); render(true); } return; }
   const s = e.target.closest("[data-star]"); if (s){ e.preventDefault(); toggleStar(s.dataset.star); return; }
   const me = e.target.closest("[data-memo-edit]"); if (me){ editing.add(me.dataset.memoEdit); render();
-    const ta = document.querySelector(`[data-memo-input="${CSS.escape(me.dataset.memoEdit)}"]`); ta?.focus(); return; }
+    const scope = $("detail").open ? $("detail") : document;
+    scope.querySelector(`[data-memo-input="${CSS.escape(me.dataset.memoEdit)}"]`)?.focus(); return; }
   const mc = e.target.closest("[data-memo-cancel]"); if (mc){ editing.delete(mc.dataset.memoCancel); render(); return; }
-  const ms = e.target.closest("[data-memo-save]"); if (ms){ saveMemo(ms.dataset.memoSave); return; }
+  const ms = e.target.closest("[data-memo-save]"); if (ms){ saveMemo(ms.dataset.memoSave, ms); return; }
+  const dt = e.target.closest("[data-detail]");
+  if (dt && !(e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1)){ e.preventDefault(); openDetail(dt.dataset.detail); return; }
+  const ph = e.target.closest("[data-photo]"); if (ph){ state.photoIdx = +ph.dataset.photo; renderDetail(); return; }
+  const cm = e.target.closest("[data-cmp]"); if (cm){ toggleCompare(cm.dataset.cmp); return; }
+  if (e.target.closest("[data-cmp-open]")){ $("cmpdlg").showModal(); renderCompare(); return; }
+  if (e.target.closest("[data-cmp-clear]")){ state.compare.clear(); saveCompare(); $("cmpdlg").close(); render(); return; }
+  if (e.target.closest("[data-close]")){ e.target.closest("dialog")?.close(); return; }
+  if (e.target.closest("[data-dismiss-notice]")){ safeSet("hideNotice", "1"); $("warn").innerHTML = ""; return; }
   if (e.target.closest("[data-open-settings]")) openSettings();
 });
 function scrollToList(){
@@ -670,6 +918,14 @@ $("saveSettings").onclick = async () => {
   await loadStars(); renderHeader(); render();
 };
 window.addEventListener("resize", () => moveIndicator(false));
+for (const dlg of document.querySelectorAll("dialog")) dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
+$("detail").addEventListener("close", () => { state.detailId = null; });
+document.addEventListener("keydown", (e) => {
+  if (!$("detail").open || e.target.closest("textarea,input")) return;
+  const n = photosOf(findCar(state.detailId) || {}).length; if (n < 2) return;
+  if (e.key === "ArrowRight"){ state.photoIdx = (state.photoIdx + 1) % n; renderDetail(); }
+  if (e.key === "ArrowLeft"){ state.photoIdx = (state.photoIdx - 1 + n) % n; renderDetail(); }
+});
 $("totop").onclick = () => window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
 // フォントの読み込みなどでタブの幅が変わったら、つまみの位置を合わせ直す
 if ("ResizeObserver" in window) new ResizeObserver(() => moveIndicator(false)).observe($("tabs"));

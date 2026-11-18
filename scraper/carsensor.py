@@ -90,6 +90,16 @@ def parse_cards(html: str) -> list[dict]:
         if img_src and img_src.startswith("//"):
             img_src = "https:" + img_src
 
+        # サブ写真（一覧では80x60の縮小版。先頭の S を外すと 640x480 の大きい写真になる）
+        photos = []
+        for sub in card.select(".cassetteMain__subImg img"):
+            src = sub.get("src") or sub.get("data-original") or ""
+            if src.startswith("//"):
+                src = "https:" + src
+            big = re.sub(r"/S(UZ\d+_\d+_\d+\.jpg)$", r"/\1", src)
+            if big:
+                photos.append({"url": big, "caption": sub.get("alt") or ""})
+
         area = [p.get_text(strip=True) for p in card.select(".cassetteSub__area p")]
         shop = card.select_one(".cassetteSub__shop a")
         body_items = [li.get_text(strip=True) for li in card.select(".carBodyInfoList__item")]
@@ -117,6 +127,7 @@ def parse_cards(html: str) -> list[dict]:
                 "city": area[1] if len(area) > 1 else "",
                 "shop": shop.get_text(strip=True) if shop else "",
                 "image": img_src,
+                "photos": photos,
                 "url": f"{BASE}/usedcar/detail/{cid}/index.html",
             }
         )
@@ -125,6 +136,8 @@ def parse_cards(html: str) -> list[dict]:
         for k, v in car.items():
             if isinstance(v, str) and k not in ("id", "url", "image"):
                 car[k] = unicodedata.normalize("NFKC", v).strip()
+        for ph in car["photos"]:
+            ph["caption"] = unicodedata.normalize("NFKC", ph["caption"]).strip()
     return cars
 
 
