@@ -7,145 +7,279 @@
 <title>マツダ中古車ウォッチ</title>
 <style>
 :root{
-  --bg:#f5f6f8; --panel:#fff; --text:#16181d; --muted:#667085; --line:#e4e7ec;
-  --accent:#1d4ed8; --main:#16a34a; --near:#d97706; --drop:#dc2626; --star:#f5b301; --ended:#6b7280;
+  --bg:#f5f5f7; --surface:#ffffff; --surface-2:#fbfbfd; --text:#1d1d1f; --text-2:#6e6e73; --text-3:#86868b;
+  --hair:rgba(0,0,0,.08); --fill:rgba(0,0,0,.05); --fill-2:rgba(0,0,0,.08);
+  --link:#0066cc; --accent:#0071e3; --accent-h:#0077ed;
+  --main:#248a3d; --main-bg:rgba(36,138,61,.12); --near:#b25000; --near-bg:rgba(201,94,0,.12);
+  --drop:#d70015; --drop-bg:rgba(215,0,21,.10); --new:#0071e3; --new-bg:rgba(0,113,227,.12);
+  --star:#ff9f0a; --ended:#86868b;
+  --nav:rgba(251,251,253,.78); --shadow:0 2px 6px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+  --shadow-h:0 4px 10px rgba(0,0,0,.06),0 18px 44px rgba(0,0,0,.12);
+  --memo:#fff8e1; --memo-line:#f1dfa4;
+  --ease:cubic-bezier(.28,.11,.32,1);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#000; --surface:#1c1c1e; --surface-2:#161617; --text:#f5f5f7; --text-2:#a1a1a6; --text-3:#86868b;
+    --hair:rgba(255,255,255,.10); --fill:rgba(255,255,255,.08); --fill-2:rgba(255,255,255,.14);
+    --link:#2997ff; --accent:#0a84ff; --accent-h:#409cff;
+    --main:#30d158; --main-bg:rgba(48,209,88,.16); --near:#ff9f0a; --near-bg:rgba(255,159,10,.16);
+    --drop:#ff453a; --drop-bg:rgba(255,69,58,.16); --new:#64d2ff; --new-bg:rgba(100,210,255,.14);
+    --nav:rgba(22,22,23,.72); --shadow:0 1px 0 rgba(255,255,255,.04) inset; --shadow-h:0 0 0 1px rgba(255,255,255,.12) inset,0 18px 44px rgba(0,0,0,.5);
+    --memo:rgba(255,214,10,.10); --memo-line:rgba(255,214,10,.28);
+  }
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Hiragino Sans","Yu Gothic UI",sans-serif;font-size:14px}
-header{background:var(--panel)}
-.stickybar{background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10;transition:box-shadow .15s}
-.stickybar.stuck{box-shadow:0 2px 10px rgba(0,0,0,.08)}
-.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
-.top{display:flex;align-items:center;gap:16px;padding:14px 0 10px}
-.top h1{font-size:19px;margin:0}
-.top .updated{color:var(--muted);font-size:12px}
-.top .spacer{flex:1}
-button{font:inherit;cursor:pointer}
-.btn{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:6px 12px}
-.btn:hover{background:#f0f2f5}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-.market{display:flex;align-items:center;gap:18px;padding:0 0 12px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
-.market b{color:var(--text)}
-.market .sep{width:1px;height:14px;background:var(--line)}
-.bar{display:flex;align-items:center;gap:8px;padding:8px 0;flex-wrap:wrap}
-.tab{border:none;background:none;padding:7px 12px;border-radius:999px;color:var(--muted);font-weight:600}
-.tab.on{background:var(--text);color:#fff}
-.tab .n{opacity:.75;font-weight:400;margin-left:4px}
-select{font:inherit;padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
-.cond{color:var(--muted);font-size:12px;padding:12px 0 0}
-main.wrap{padding-top:16px;padding-bottom:60px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;position:relative}
-.card.ended{opacity:.62}
-.thumb{position:relative;aspect-ratio:4/3;background:#e9ecf1;display:block}
-.thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.badges{position:absolute;left:8px;top:8px;display:flex;gap:4px;flex-wrap:wrap}
-.badge{font-size:11px;font-weight:700;color:#fff;padding:2px 7px;border-radius:5px}
-.b-main{background:var(--main)} .b-near{background:var(--near)} .b-new{background:var(--accent)}
-.b-drop{background:var(--drop)} .b-ended{background:var(--ended)} .b-oos{background:#475467}
-.starbtn{position:absolute;right:8px;top:8px;width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,.92);font-size:21px;line-height:38px;color:#b8bec9;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic UI","Segoe UI",sans-serif;
+  font-size:15px;line-height:1.47;letter-spacing:-.01em;font-feature-settings:"palt";-webkit-font-smoothing:antialiased}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--link);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+.icon{width:18px;height:18px;display:block}
+
+/* ---------- global nav ---------- */
+.gnav{height:48px;background:var(--nav);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--hair)}
+.gnav .wrap{height:100%;display:flex;align-items:center;gap:20px}
+.brand{font-weight:600;font-size:15px;letter-spacing:-.01em;color:var(--text)}
+.gnav .sp{flex:1}
+.gnav a.ext{font-size:13px;color:var(--text-2)}
+.gnav a.ext:hover{color:var(--text);text-decoration:none}
+.iconbtn{width:34px;height:34px;border-radius:50%;border:none;background:none;display:grid;place-items:center;color:var(--text-2);transition:background .2s,color .2s}
+.iconbtn:hover{background:var(--fill);color:var(--text)}
+
+/* ---------- hero ---------- */
+.hero{text-align:center;padding:88px 0 56px}
+.eyebrow{font-size:17px;font-weight:600;color:var(--near);margin:0 0 10px;letter-spacing:.01em}
+.hero h1{font-size:64px;line-height:1.06;font-weight:700;letter-spacing:-.025em;margin:0}
+.hero .lead{font-size:21px;line-height:1.5;color:var(--text-2);margin:20px auto 0;max-width:860px;font-weight:400;text-wrap:balance}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);margin:56px auto 0;max-width:960px}
+.stat{padding:4px 12px;border-left:1px solid var(--hair)}
+.stat:first-child{border-left:none}
+.stat .lbl{font-size:13px;color:var(--text-2);font-weight:500}
+.stat .val{font-size:48px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-top:6px;font-variant-numeric:tabular-nums}
+.stat .val small{font-size:19px;font-weight:600;margin-left:2px;letter-spacing:0}
+.stat.good .val{color:var(--main)} .stat.red .val{color:var(--drop)}
+.market{margin:36px auto 0;display:flex;justify-content:center;gap:28px;flex-wrap:wrap;font-size:14px;color:var(--text-2)}
+.market b{color:var(--text);font-weight:600}
+.updated{margin-top:14px;font-size:12px;color:var(--text-3)}
+
+/* ---------- sticky local nav ---------- */
+.lnav{position:sticky;top:0;z-index:20;background:var(--nav);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid transparent;transition:border-color .3s var(--ease)}
+.lnav.stuck{border-bottom-color:var(--hair)}
+.lnav .wrap{display:flex;align-items:center;gap:12px;height:60px}
+.lnav .ttl{font-size:17px;font-weight:600;white-space:nowrap;opacity:0;transform:translateY(4px);transition:opacity .35s var(--ease),transform .35s var(--ease);pointer-events:none;width:0;overflow:hidden}
+.lnav.stuck .ttl{opacity:1;transform:none;width:auto;margin-right:8px}
+.seg{position:relative;display:flex;background:var(--fill);border-radius:999px;padding:3px}
+.seg .ind{position:absolute;top:3px;bottom:3px;left:0;border-radius:999px;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.12),0 0 0 .5px rgba(0,0,0,.04);
+  transition:transform .45s var(--ease),width .45s var(--ease);will-change:transform}
+.tab{position:relative;z-index:1;border:none;background:none;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:500;color:var(--text-2);white-space:nowrap;transition:color .3s}
+.tab:hover{color:var(--text)}
+.tab.on{color:var(--text);font-weight:600}
+.tab .n{margin-left:5px;color:var(--text-3);font-weight:500;font-variant-numeric:tabular-nums}
+.lnav .sp{flex:1}
+.select{position:relative}
+.select select{appearance:none;-webkit-appearance:none;border:none;background:var(--fill);border-radius:999px;padding:7px 30px 7px 14px;font-size:13px;cursor:pointer;transition:background .2s}
+.select select:hover{background:var(--fill-2)}
+.select::after{content:"";position:absolute;right:13px;top:50%;width:6px;height:6px;border-right:1.5px solid var(--text-2);border-bottom:1.5px solid var(--text-2);transform:translateY(-70%) rotate(45deg);pointer-events:none}
+
+/* ---------- section ---------- */
+main{padding:56px 0 40px}
+.sechead{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:28px}
+.sechead h2{font-size:40px;line-height:1.1;font-weight:700;letter-spacing:-.02em;margin:0}
+.sechead p{margin:8px 0 0;color:var(--text-2);font-size:17px}
+.sechead .count{font-size:14px;color:var(--text-3);white-space:nowrap}
+.notice{display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:18px;padding:14px 20px;margin-bottom:28px;font-size:14px;color:var(--text-2);box-shadow:var(--shadow)}
+.notice button{margin-left:auto}
+
+/* ---------- cards ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px}
+.card{background:var(--surface);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;position:relative;box-shadow:var(--shadow);
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease),opacity .6s var(--ease)}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow-h)}
+.card.pre{opacity:0;transform:translateY(28px)}
+.card.ended{opacity:.55}
+.card.ended:hover{opacity:.8}
+.thumb{position:relative;aspect-ratio:4/3;background:linear-gradient(135deg,var(--fill),var(--fill-2));display:block;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.2s var(--ease)}
+.card:hover .thumb img{transform:scale(1.045)}
+.badges{position:absolute;left:14px;top:14px;display:flex;gap:6px;flex-wrap:wrap}
+.badge{font-size:11px;font-weight:600;padding:4px 9px;border-radius:999px;letter-spacing:.02em;
+  background:rgba(255,255,255,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.b-main{color:var(--main)} .b-near{color:var(--near)} .b-new{color:var(--new)} .b-drop{color:var(--drop)} .b-ended{color:#3a3a3c} .b-oos{color:#3a3a3c}
+@media (prefers-color-scheme: dark){ .badge{background:rgba(0,0,0,.55)} .b-ended,.b-oos{color:#d1d1d6} }
+.starbtn{position:absolute;right:12px;top:12px;width:40px;height:40px;border-radius:50%;border:none;display:grid;place-items:center;
+  background:rgba(255,255,255,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#6e6e73;
+  transition:transform .35s var(--ease),background .2s,color .2s}
+.starbtn:hover{transform:scale(1.08);background:rgba(255,255,255,.95)}
 .starbtn.on{color:var(--star)}
-.starbtn:disabled{opacity:.5;cursor:wait}
-.body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
-.title{font-weight:700;font-size:14.5px;line-height:1.35}
-.title a{color:inherit;text-decoration:none}
-.title a:hover{color:var(--accent);text-decoration:underline}
-.price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-.price .total{font-size:22px;font-weight:800}
-.price .total small{font-size:13px;font-weight:600}
-.price .base{color:var(--muted);font-size:12px}
-.drop{color:var(--drop);font-weight:700;font-size:12.5px}
-.specs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 10px;font-size:13px}
-.specs>div{min-width:0;overflow-wrap:anywhere}
-.specs span{color:var(--muted);font-size:11px;display:block}
-.meta{color:var(--muted);font-size:12px;line-height:1.5}
-.reasons{color:var(--near);font-size:12px;font-weight:600}
-.catch{color:var(--muted);font-size:11.5px;line-height:1.45;max-height:3.0em;overflow:hidden}
-details{font-size:12px;color:var(--muted)}
-details table{border-collapse:collapse;margin-top:4px}
-details td{padding:1px 10px 1px 0}
-.memo{background:#fffbea;border:1px solid #f3e3a3;border-radius:8px;padding:6px 8px;font-size:12.5px;white-space:pre-wrap;cursor:pointer}
-.memo.emptymemo{background:none;border-style:dashed;border-color:var(--line);color:var(--muted)}
-.memo textarea{width:100%;min-height:64px;font:inherit;border:1px solid var(--line);border-radius:6px;padding:6px;resize:vertical}
-.memo .mrow{display:flex;gap:6px;justify-content:flex-end;margin-top:4px}
-.memo .mrow button{padding:3px 10px;font-size:12px}
-.foot{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:12px;margin-top:auto;padding-top:4px}
-.old{color:#b42318;font-weight:600}
-.empty{background:var(--panel);border:1px dashed var(--line);border-radius:12px;padding:48px;text-align:center;color:var(--muted)}
-dialog{border:none;border-radius:14px;padding:24px;width:520px;max-width:calc(100% - 32px);box-shadow:0 10px 40px rgba(0,0,0,.25)}
-dialog::backdrop{background:rgba(0,0,0,.35)}
-dialog h2{margin:0 0 12px;font-size:17px}
-dialog label{display:block;font-weight:600;margin:12px 0 4px}
-dialog input{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px}
-dialog .help{color:var(--muted);font-size:12px;line-height:1.6}
-dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;display:none;z-index:50}
-.warn{background:#fff7e6;border:1px solid #f5d38f;color:#7a4b00;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:13px}
+.starbtn.pop{animation:pop .5s var(--ease)}
+.starbtn:disabled{cursor:wait}
+.starbtn:disabled svg{animation:pulse 1s ease-in-out infinite}
+.starbtn svg{width:20px;height:20px}
+@media (prefers-color-scheme: dark){ .starbtn{background:rgba(30,30,32,.7);color:#d1d1d6} .starbtn:hover{background:rgba(44,44,46,.9)} }
+@keyframes pop{0%{transform:scale(1)}35%{transform:scale(1.28)}100%{transform:scale(1)}}
+@keyframes pulse{50%{opacity:.35}}
+.body{padding:20px 22px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.cmodel{font-size:12px;font-weight:600;color:var(--text-2);letter-spacing:.02em}
+.title{font-size:19px;line-height:1.3;font-weight:600;letter-spacing:-.015em;margin:-6px 0 0}
+.title a{color:inherit}
+.title a:hover{color:var(--link);text-decoration:none}
+.price{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.price .total{font-size:30px;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1.1}
+.price .total small{font-size:15px;font-weight:600;letter-spacing:0;margin-left:1px}
+.price .base{color:var(--text-3);font-size:12px}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;width:fit-content}
+.chip.drop{color:var(--drop);background:var(--drop-bg)}
+.chip.reason{color:var(--near);background:var(--near-bg)}
+.specs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:4px 0 0;padding:14px 0 0;border-top:1px solid var(--hair);row-gap:12px}
+.specs div{min-width:0;padding-right:8px}
+.specs dt{font-size:11px;color:var(--text-3);margin:0}
+.specs dd{margin:2px 0 0;font-size:14px;font-weight:500;overflow-wrap:anywhere}
+.meta{color:var(--text-2);font-size:13px;line-height:1.5}
+.catch{color:var(--text-3);font-size:12px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+details{font-size:12px;color:var(--text-2)}
+details summary{cursor:pointer;color:var(--link);list-style:none;width:fit-content}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:" ›";display:inline-block;transition:transform .3s var(--ease)}
+details[open] summary::after{transform:rotate(90deg)}
+details table{border-collapse:collapse;margin-top:6px;font-variant-numeric:tabular-nums}
+details td{padding:2px 14px 2px 0}
+.memo{background:var(--memo);border:1px solid var(--memo-line);border-radius:14px;padding:10px 12px;font-size:13px;white-space:pre-wrap;cursor:pointer;transition:filter .2s}
+.memo:hover{filter:brightness(.98)}
+.memo.emptymemo{background:none;border:1px dashed var(--hair);color:var(--text-3);text-align:center}
+.memo.emptymemo:hover{color:var(--link);border-color:var(--link)}
+.memo textarea{width:100%;min-height:76px;border:1px solid var(--hair);background:var(--surface);border-radius:10px;padding:8px 10px;resize:vertical;outline:none}
+.memo textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,113,227,.2)}
+.memo .mrow{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}
+.foot{display:flex;justify-content:space-between;gap:8px;color:var(--text-3);font-size:12px;margin-top:auto;padding-top:6px}
+.old{color:var(--drop);font-weight:600}
+
+/* ---------- buttons ---------- */
+.btn{border:none;border-radius:999px;padding:8px 18px;font-size:14px;background:var(--fill);color:var(--text);transition:background .2s,transform .2s}
+.btn:hover{background:var(--fill-2)}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--accent);color:#fff}
+.btn.primary:hover{background:var(--accent-h)}
+.btn.sm{padding:5px 14px;font-size:13px}
+
+.empty{grid-column:1/-1;text-align:center;padding:96px 24px;color:var(--text-2)}
+.empty .big{font-size:28px;font-weight:600;color:var(--text);margin-bottom:8px;letter-spacing:-.02em}
+
+footer{border-top:1px solid var(--hair);margin-top:40px;padding:22px 0 48px;color:var(--text-3);font-size:12px;line-height:1.7}
+
+/* ---------- dialog / toast ---------- */
+dialog{border:none;border-radius:24px;padding:32px;width:540px;max-width:calc(100% - 32px);background:var(--surface);color:var(--text);
+  box-shadow:0 30px 80px rgba(0,0,0,.3)}
+dialog[open]{animation:dlg .45s var(--ease)}
+dialog::backdrop{background:rgba(0,0,0,.28);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);animation:fade .3s ease}
+@keyframes dlg{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}}
+dialog h2{margin:0 0 8px;font-size:28px;font-weight:700;letter-spacing:-.02em}
+dialog label{display:block;font-weight:600;font-size:13px;margin:20px 0 6px}
+dialog input,dialog select{width:100%;padding:11px 14px;border:1px solid var(--hair);border-radius:12px;background:var(--surface-2);outline:none;transition:border-color .2s,box-shadow .2s}
+dialog input:focus,dialog select:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(0,113,227,.18)}
+dialog .help{color:var(--text-2);font-size:12px;line-height:1.6;margin:6px 0 0}
+dialog .row{display:flex;gap:10px;justify-content:flex-end;margin-top:28px}
+#toast{position:fixed;bottom:32px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:50;
+  background:rgba(29,29,31,.86);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);color:#fff;padding:12px 22px;border-radius:999px;font-size:14px;
+  transition:opacity .35s var(--ease),transform .45s var(--ease)}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .card.pre{opacity:1;transform:none}
+}
+@media (max-width: 900px){
+  .hero h1{font-size:44px} .stats{grid-template-columns:repeat(2,1fr);row-gap:28px} .stat:nth-child(3){border-left:none}
+  .lnav .wrap{height:auto;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+}
 </style>
 </head>
 <body>
-<header>
+<nav class="gnav">
   <div class="wrap">
-    <div class="top">
-      <h1>マツダ中古車ウォッチ</h1>
-      <span class="updated" id="updated"></span>
-      <span class="spacer"></span>
-      <a class="btn" id="srcLink" target="_blank" rel="noopener">カーセンサーで検索結果を開く</a>
-      <button class="btn" id="settingsBtn">⚙ 設定</button>
-    </div>
+    <span class="brand">マツダ中古車ウォッチ</span>
+    <span class="sp"></span>
+    <a class="ext" id="srcLink" target="_blank" rel="noopener">カーセンサーで見る ↗</a>
+    <button class="iconbtn" id="settingsBtn" title="設定" aria-label="設定">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </div>
+</nav>
+
+<header class="hero" id="hero">
+  <div class="wrap">
+    <p class="eyebrow">MAZDA3 ・ CX-30</p>
+    <h1>条件に合う一台だけを。</h1>
+    <p class="lead" id="lead">毎晩21時に、関西・三重・福井から探します。</p>
+    <div class="stats" id="stats"></div>
     <div class="market" id="market"></div>
+    <div class="updated" id="updated"></div>
   </div>
 </header>
-<div class="stickybar" id="stickybar">
+
+<div class="lnav" id="lnav">
   <div class="wrap">
-    <div class="bar">
-      <div id="tabs"></div>
-      <span class="spacer" style="flex:1"></span>
-      <select id="model">
-        <option value="">全車種</option>
-        <option value="MAZDA3">MAZDA3</option>
-        <option value="CX-30">CX-30</option>
-      </select>
-      <select id="pref"><option value="">全地域</option></select>
-      <select id="sort">
-        <option value="price">支払総額が安い順</option>
-        <option value="new">新着順</option>
-        <option value="km">走行距離が少ない順</option>
-        <option value="year">年式が新しい順</option>
-        <option value="dist">自宅から近い順</option>
-        <option value="days">掲載が長い順</option>
-      </select>
-    </div>
+    <span class="ttl">中古車ウォッチ</span>
+    <div class="seg"><span class="ind" id="ind"></span><div id="tabs" style="display:flex"></div></div>
+    <span class="sp"></span>
+    <label class="select"><select id="model" aria-label="車種">
+      <option value="">全車種</option>
+      <option value="MAZDA3">MAZDA3</option>
+      <option value="CX-30">CX-30</option>
+    </select></label>
+    <label class="select"><select id="pref" aria-label="地域"><option value="">全地域</option></select></label>
+    <label class="select"><select id="sort" aria-label="並べ替え">
+      <option value="price">支払総額が安い順</option>
+      <option value="new">新着順</option>
+      <option value="km">走行距離が少ない順</option>
+      <option value="year">年式が新しい順</option>
+      <option value="dist">自宅から近い順</option>
+      <option value="days">掲載が長い順</option>
+    </select></label>
   </div>
 </div>
-<main class="wrap">
-  <div id="warn"></div>
-  <div class="grid" id="grid"></div>
-  <p class="cond" id="cond"></p>
+
+<main>
+  <div class="wrap">
+    <div id="warn"></div>
+    <div class="sechead" id="list-top">
+      <div><h2 id="secTitle"></h2><p id="secDesc"></p></div>
+      <span class="count" id="secCount"></span>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
 </main>
+<footer><div class="wrap" id="cond"></div></footer>
 
 <dialog id="settings">
   <h2>設定</h2>
-  <p class="help">星はGitHubのリポジトリ内の <code>docs/data/stars.json</code> に保存します。ブラウザのデータを消しても星は消えません（消えた場合はここにトークンを入れ直すだけで戻ります）。</p>
-  <label for="repo">リポジトリ（ユーザー名/リポジトリ名）</label>
+  <p class="help">星とメモはGitHubのリポジトリ内の <code>docs/data/stars.json</code> に保存されます。ブラウザのデータを消しても消えません。</p>
+  <label for="repo">リポジトリ</label>
   <input id="repo" placeholder="例: yourname/car-alert">
   <label for="token">GitHub アクセストークン</label>
   <input id="token" type="password" placeholder="github_pat_...">
-  <p class="help">このリポジトリだけに「Contents: Read and write」権限を与えた Fine-grained token を使ってください。トークンはこのパソコンのブラウザ内にだけ保存されます。</p>
-  <label for="home">自宅の都道府県（「自宅から近い順」と距離の表示に使います）</label>
-  <select id="home" style="width:100%"></select>
-  <p class="help">距離は県庁所在地どうしの直線距離の目安です。</p>
+  <p class="help">このリポジトリだけに「Contents: Read and write」権限を与えた Fine-grained token。トークンはこのパソコンのブラウザ内にだけ保存されます。</p>
+  <label for="home">自宅の都道府県</label>
+  <select id="home"></select>
+  <p class="help">「自宅から近い順」と距離の表示に使います。距離は県庁所在地どうしの直線距離の目安です。</p>
   <div class="row">
     <button class="btn" id="cancelSettings">閉じる</button>
-    <button class="btn primary" id="saveSettings">保存して接続テスト</button>
+    <button class="btn primary" id="saveSettings">保存</button>
   </div>
 </dialog>
-<div id="toast"></div>
+<div id="toast" role="status" aria-live="polite"></div>
 
 <script>
 const STAR_PATH = "docs/data/stars.json";
-const state = { data: null, stars: {}, starsSha: null, tab: "main", busy: new Set() };
+const state = { data: null, stars: {}, starsSha: null, tab: "main", busy: new Set(), popped: null };
 const $ = (id) => document.getElementById(id);
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function safeGet(k){ try { return localStorage.getItem(k) || ""; } catch { return ""; } }
 function safeSet(k,v){ try { localStorage.setItem(k, v); } catch {} }
@@ -160,8 +294,8 @@ const settings = {
 };
 
 function toast(msg, ms=2600){
-  const t = $("toast"); t.textContent = msg; t.style.display = "block";
-  clearTimeout(toast._t); toast._t = setTimeout(() => t.style.display = "none", ms);
+  const t = $("toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove("show"), ms);
 }
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const fmtPrice = (v) => v == null ? "記載なし" : `${v.toFixed(1)}<small>万円</small>`;
@@ -169,6 +303,7 @@ const fmtKm = (v) => v == null ? "-" : `${Math.round(v*10000).toLocaleString()}k
 const group = (c) => (c.model || "").startsWith("CX-30") ? "CX-30" : "MAZDA3";
 // 全角英数字・全角スペースを半角にそろえる（例：Ｗｅｓｔ　Ｖｉｌｌａｇｅ → West Village）
 const nz = (s) => String(s ?? "").normalize("NFKC");
+const STAR_SVG = (on) => `<svg viewBox="0 0 24 24" fill="${on ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-2.9-5.4 2.9 1.1-6-4.5-4.2 6.1-.8z"/></svg>`;
 
 // 県庁所在地の緯度経度（自宅からの距離の目安に使う）
 const PREF_POS = {
@@ -245,7 +380,7 @@ async function saveStars(message, mutate){
 }
 
 async function toggleStar(id){
-  if (!settings.token || !settings.repo){ toast("星を保存するには、まず ⚙設定 でトークンを登録してください", 4000); $("settings").showModal(); return; }
+  if (!settings.token || !settings.repo){ toast("星を保存するには、まず設定でトークンを登録してください", 4000); openSettings(); return; }
   if (state.busy.has(id)) return;
   state.busy.add(id); render();
   const car = state.data.cars[id];
@@ -255,7 +390,8 @@ async function toggleStar(id){
       if (on) s[id] = { starred_at: new Date().toISOString(), snapshot: car ? snapshot(car) : (s[id]?.snapshot || null) };
       else delete s[id];
     });
-    toast(on ? "星をつけました" : "星を外しました");
+    if (on) state.popped = id;
+    toast(on ? "保存しました" : "保存を解除しました");
   } catch(e){ toast(e.message, 5000); await loadStars(); }
   state.busy.delete(id); render();
 }
@@ -264,7 +400,7 @@ function snapshot(c){
   return Object.fromEntries(keys.map(k => [k, c[k]]));
 }
 
-// ---------- render ----------
+// ---------- data helpers ----------
 function allCars(){
   const cars = { ...(state.data?.cars || {}) };
   // 星つきでデータから消えた車はスナップショットで表示（掲載終了扱い）
@@ -280,28 +416,34 @@ function lastDrop(c){
   const pa = a.total ?? a.base, pb = b.total ?? b.base;
   return pb < pa ? { amount: pa - pb, date: b.date } : null;
 }
-function isNew(c){
-  const upd = (state.data?.updated_at || "").slice(0,10);
-  return c.first_seen && c.first_seen === upd;
+const updDate = () => (state.data?.updated_at || "").slice(0,10);
+const isNew = (c) => c.first_seen && c.first_seen === updDate();
+
+function tabsDef(){
+  const k = state.data?.conditions || {};
+  return [
+    ["main","本命", c => c.status === "active" && c.tier === "main", "すべての条件を満たす車。"],
+    ["near","惜しい候補", c => c.status === "active" && c.tier === "near",
+      `支払総額${k.near_total_price_max ?? 220}万円・${k.near_mileage_max ?? 6}万kmまで広げると見つかる車。`],
+    ["star","保存", c => !!state.stars[c.id], "★をつけた車と、そのメモ。"],
+    ["all","すべて", c => c.status !== "ended", "全方位カメラ付き・修復歴なしのガソリン車すべて。"],
+    ["ended","掲載終了", c => c.status === "ended", "売れた、または掲載が終わった車。"],
+  ];
 }
 
-const TABS = [
-  ["main","本命", c => c.status === "active" && c.tier === "main"],
-  ["near","惜しい候補", c => c.status === "active" && c.tier === "near"],
-  ["star","★ 保存", c => !!state.stars[c.id]],
-  ["all","掲載中すべて", c => c.status !== "ended"],
-  ["ended","掲載終了", c => c.status === "ended"],
-];
-
-function render(){
+// ---------- render ----------
+function render(animate = false){
   const cars = allCars();
   const model = $("model").value, pref = $("pref").value;
   const match = (c) => (!model || group(c) === model) && (!pref || c.pref === pref);
+  const TABS = tabsDef();
   $("tabs").innerHTML = TABS.map(([k,label,f]) => {
     const n = cars.filter(c => f(c) && match(c)).length;
     return `<button class="tab ${state.tab===k?"on":""}" data-tab="${k}">${label}<span class="n">${n}</span></button>`;
   }).join("");
-  const filt = TABS.find(t => t[0] === state.tab)[2];
+  moveIndicator(animate);
+
+  const [, title, filt, desc] = TABS.find(t => t[0] === state.tab);
   let list = cars.filter(c => filt(c) && match(c));
   const sort = $("sort").value;
   const P = (c) => c.total_price ?? c.base_price ?? 9999;
@@ -314,11 +456,44 @@ function render(){
     days: (a,b) => (daysListed(b) ?? -1) - (daysListed(a) ?? -1) || P(a) - P(b),
   }[sort]);
 
-  $("grid").innerHTML = list.length ? list.map(card).join("") :
-    `<div class="empty" style="grid-column:1/-1">${state.tab==="star" ? "まだ星をつけた車はありません。気になる車の ☆ を押すと保存できます。" : "該当する車はありません。"}</div>`;
+  $("secTitle").textContent = title;
+  $("secDesc").textContent = desc;
+  $("secCount").textContent = `${list.length}台`;
+  $("grid").innerHTML = list.length ? list.map(c => card(c, animate)).join("") :
+    `<div class="empty"><div class="big">${state.tab==="star" ? "まだ保存した車はありません。" : "該当する車はありません。"}</div>${state.tab==="star" ? "気になる車の ☆ を押すと、ここに集まります。" : "条件や絞り込みを変えてみてください。"}</div>`;
+  if (animate) reveal();
+  state.popped = null;
 }
 
-function card(c){
+// セグメントの白いつまみを、選択中のタブまでスライドさせる
+function moveIndicator(animate){
+  const on = document.querySelector(".tab.on"), ind = $("ind");
+  if (!on) return;
+  if (!animate && !ind.dataset.ready) ind.style.transition = "none";
+  ind.style.width = on.offsetWidth + "px";
+  ind.style.transform = `translateX(${on.offsetLeft}px)`;
+  if (!ind.dataset.ready){ ind.offsetWidth; ind.style.transition = ""; ind.dataset.ready = "1"; }
+}
+
+// 画面に入ってきたカードから順に、ふわっと浮かび上がらせる
+let revealObs;
+function reveal(){
+  if (reduceMotion || !("IntersectionObserver" in window)){
+    document.querySelectorAll(".card.pre").forEach(c => c.classList.remove("pre")); return;
+  }
+  revealObs?.disconnect();
+  revealObs = new IntersectionObserver((entries) => {
+    entries.filter(e => e.isIntersecting).forEach((e, i) => {
+      e.target.style.transitionDelay = `${Math.min(i, 8) * 60}ms`;
+      e.target.classList.remove("pre");
+      setTimeout(() => { e.target.style.transitionDelay = ""; }, 900);
+      revealObs.unobserve(e.target);
+    });
+  }, { rootMargin: "0px 0px -40px 0px" });
+  document.querySelectorAll(".card.pre").forEach(c => revealObs.observe(c));
+}
+
+function card(c, animate){
   const starred = !!state.stars[c.id];
   const drop = lastDrop(c);
   const badges = [];
@@ -334,28 +509,32 @@ function card(c){
   const histHtml = hist.length > 1 ? `<details><summary>価格の履歴（${hist.length}件）</summary><table>${
     hist.map(h => `<tr><td>${esc(h.date)}</td><td>総額 ${h.total==null?"記載なし":h.total.toFixed(1)+"万円"}</td><td>本体 ${h.base==null?"-":h.base.toFixed(1)+"万円"}</td></tr>`).join("")
   }</table></details>` : "";
-  const reasons = (c.near_reasons || []).length ? `<div class="reasons">惜しい点：${esc(c.near_reasons.join(" / "))}</div>` : "";
+  const chips = [];
+  if (drop) chips.push(`<span class="chip drop">▼ ${drop.amount.toFixed(1)}万円値下げ（${esc(drop.date.slice(5).replace("-","/"))}）</span>`);
+  (c.near_reasons || []).forEach(r => chips.push(`<span class="chip reason">${esc(r)}</span>`));
   const endedNote = c.status === "ended" && c.ended_on ? `<div class="meta">掲載終了を確認：${esc(c.ended_on)}</div>` : "";
-  return `<article class="card ${c.status==="ended"?"ended":""}">
-    <a class="thumb" href="${esc(c.url)}" target="_blank" rel="noopener">
+  const mission = nz(c.mission || "").replace(/フロア|コラム|インパネ|MTモード付/g,"").trim() || "-";
+  const insp = nz(c.inspection).replace(/\(R\d+\)/, "").replace(/年(\d+)月/, "/$1") || "-";
+  return `<article class="card ${c.status==="ended"?"ended":""} ${animate?"pre":""}">
+    <a class="thumb" href="${esc(c.url)}" target="_blank" rel="noopener" tabindex="-1">
       ${c.image ? `<img src="${esc(c.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ""}
       <div class="badges">${badges.join("")}</div>
     </a>
-    <button class="starbtn ${starred?"on":""}" data-star="${esc(c.id)}" title="${starred?"星を外す":"星をつける"}" ${state.busy.has(c.id)?"disabled":""}>${starred?"★":"☆"}</button>
+    <button class="starbtn ${starred?"on":""} ${state.popped===c.id?"pop":""}" data-star="${esc(c.id)}" aria-label="${starred?"保存を解除":"保存する"}" title="${starred?"保存を解除":"保存する"}" ${state.busy.has(c.id)?"disabled":""}>${STAR_SVG(starred)}</button>
     <div class="body">
-      <div class="title"><a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(nz(c.model))} ${esc(nz(c.grade))}</a></div>
-      <div class="price"><span class="total">${fmtPrice(c.total_price)}</span><span class="base">支払総額 ／ 本体 ${c.base_price==null?"-":c.base_price.toFixed(1)+"万円"}</span>
-        ${drop ? `<span class="drop">▼${drop.amount.toFixed(1)}万円（${esc(drop.date.slice(5))}）</span>` : ""}</div>
-      ${reasons}
-      <div class="specs">
-        <div><span>年式</span>${esc(c.year ?? "-")}年</div>
-        <div><span>走行距離</span>${fmtKm(c.mileage)}</div>
-        <div><span>車検</span>${esc(nz(c.inspection).replace(/\(R\d+\)/, "").replace(/年(\d+)月/, "/$1") || "-")}</div>
-        <div><span>色</span>${esc(nz(c.color) || "-")}</div>
-        <div><span>ミッション</span><span style="all:unset" title="${esc(nz(c.mission))}">${esc(nz(c.mission || "-").replace(/フロア|コラム|インパネ|MTモード付/g,"").trim() || "-")}</span></div>
-        <div><span>保証</span>${esc(nz(c.warranty) || "-")}</div>
-      </div>
-      <div class="meta">${esc(c.pref)}${esc(nz(c.city))}　${esc(nz(c.shop))}</div>
+      <div class="cmodel">${esc(nz(c.model))}</div>
+      <h3 class="title"><a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(nz(c.grade))}</a></h3>
+      <div class="price"><span class="total">${fmtPrice(c.total_price)}</span><span class="base">支払総額・本体 ${c.base_price==null?"-":c.base_price.toFixed(1)+"万円"}</span></div>
+      ${chips.join("")}
+      <dl class="specs">
+        <div><dt>年式</dt><dd>${esc(c.year ?? "-")}年</dd></div>
+        <div><dt>走行距離</dt><dd>${fmtKm(c.mileage)}</dd></div>
+        <div><dt>車検</dt><dd>${esc(insp)}</dd></div>
+        <div><dt>色</dt><dd>${esc(nz(c.color) || "-")}</dd></div>
+        <div><dt>ミッション</dt><dd title="${esc(nz(c.mission))}">${esc(mission)}</dd></div>
+        <div><dt>保証</dt><dd>${esc(nz(c.warranty) || "-")}</dd></div>
+      </dl>
+      <div class="meta">${esc(c.pref)}${esc(nz(c.city))}<br>${esc(nz(c.shop))}</div>
       <div class="catch">${esc(nz(c.catch))}</div>
       ${starred ? memoHtml(c.id) : ""}
       ${endedNote}
@@ -367,8 +546,8 @@ function card(c){
 
 function footHtml(c){
   const d = daysListed(c), km = distKm(c);
-  const dayTxt = d == null ? "" : `<span class="${d >= 30 ? "old" : ""}" title="このツールで初めて確認した日：${esc(c.first_seen)}">掲載確認から${d}日${d >= 30 ? "（長期）" : ""}</span>`;
-  const kmTxt = km == null ? (homePref() ? "" : `<span>⚙設定で自宅を登録すると距離を表示</span>`)
+  const dayTxt = d == null ? "<span></span>" : `<span class="${d >= 30 ? "old" : ""}" title="このツールで初めて確認した日：${esc(c.first_seen)}">掲載確認から${d}日${d >= 30 ? "・長期" : ""}</span>`;
+  const kmTxt = km == null ? (homePref() ? "" : `<span>設定で自宅を登録すると距離を表示</span>`)
     : `<span title="県庁所在地どうしの直線距離の目安">${c.pref === homePref() ? "自宅と同じ府県" : `自宅から約${Math.max(10, Math.round(km/10)*10)}km`}</span>`;
   return dayTxt + kmTxt;
 }
@@ -379,8 +558,8 @@ function memoHtml(id){
   const memo = state.stars[id]?.memo || "";
   if (editing.has(id)) return `<div class="memo" data-memo-box="${esc(id)}">
     <textarea data-memo-input="${esc(id)}" placeholder="例：試乗予約 12/1 10時、タイヤの溝を確認">${esc(memo)}</textarea>
-    <div class="mrow"><button class="btn" data-memo-cancel="${esc(id)}">キャンセル</button><button class="btn primary" data-memo-save="${esc(id)}" ${state.busy.has(id)?"disabled":""}>保存</button></div></div>`;
-  return memo ? `<div class="memo" data-memo-edit="${esc(id)}" title="クリックして編集">📝 ${esc(memo)}</div>`
+    <div class="mrow"><button class="btn sm" data-memo-cancel="${esc(id)}">キャンセル</button><button class="btn sm primary" data-memo-save="${esc(id)}" ${state.busy.has(id)?"disabled":""}>保存</button></div></div>`;
+  return memo ? `<div class="memo" data-memo-edit="${esc(id)}" title="クリックして編集">${esc(memo)}</div>`
               : `<div class="memo emptymemo" data-memo-edit="${esc(id)}">＋ メモを追加</div>`;
 }
 async function saveMemo(id){
@@ -393,47 +572,75 @@ async function saveMemo(id){
   state.busy.delete(id); render();
 }
 
+// ---------- header ----------
+function countUp(el, to, decimals){
+  if (reduceMotion || to == null){ el.textContent = to == null ? "-" : to.toFixed(decimals); return; }
+  const start = performance.now(), dur = 1100;
+  const step = (t) => {
+    const p = Math.min(1, (t - start) / dur), e = 1 - Math.pow(1 - p, 3);
+    el.textContent = (to * e).toFixed(decimals);
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
 function renderHeader(){
   const d = state.data;
+  const k = d?.conditions;
+  const active = Object.values(d?.cars || {}).filter(c => c.status === "active");
+  const mains = active.filter(c => c.tier === "main");
+  const minMain = mains.reduce((m,c) => c.total_price != null && (m == null || c.total_price < m) ? c.total_price : m, null);
+  const newToday = active.filter(c => (c.tier === "main" || c.tier === "near") && isNew(c)).length;
+  const drops = active.filter(c => (c.tier === "main" || c.tier === "near") && lastDrop(c)?.date === updDate()).length;
+  if (k) $("lead").innerHTML = `${k.year_min}年以降・全方位カメラ・修復歴なし・支払総額${k.main_total_price_max}万円以内。<br>${k.prefs.length >= 8 ? "関西・三重・福井" : esc(k.prefs.join("・"))}から、毎晩21時に見つけます。`;
+  const stats = [
+    ["本命", mains.length, 0, "台", "good"],
+    ["本命の最安", minMain, 1, "万円", ""],
+    ["今日の新着", newToday, 0, "台", ""],
+    ["今日の値下げ", drops, 0, "台", drops ? "red" : ""],
+  ];
+  $("stats").innerHTML = stats.map(([l,,,u,cls], i) => `<div class="stat ${cls}"><div class="lbl">${l}</div><div class="val"><span data-stat="${i}">-</span><small>${u}</small></div></div>`).join("");
+  stats.forEach(([, v, dec], i) => countUp(document.querySelector(`[data-stat="${i}"]`), v, dec));
+
+  const mk = Object.entries(d?.market || {});
+  $("market").innerHTML = mk.map(([g,m]) =>
+    `<span><b>${esc(g)}</b>　5万km以内の相場 ${m.median?.toFixed(1) ?? "-"}万円（${m.count}台）</span>`).join("");
   $("updated").textContent = d?.updated_at ? `最終更新 ${d.updated_at.replace("T"," ").slice(0,16)}` : "";
   $("srcLink").href = d?.search_url || "https://www.carsensor.net/";
-  const mk = Object.entries(d?.market || {});
-  $("market").innerHTML = mk.length ? `<span>相場（5万km以内・支払総額）</span>` + mk.map(([g,m]) =>
-    `<span class="sep"></span><span><b>${esc(g)}</b>　中央値 <b>${m.median?.toFixed(1) ?? "-"}</b>万円・最安 ${m.min?.toFixed(1) ?? "-"}万円（${m.count}台）</span>`
-  ).join("") : "";
-  const prefs = d?.conditions?.prefs || Object.keys(PREF_POS);
+  const prefs = k?.prefs || Object.keys(PREF_POS);
   const cur = $("pref").value;
   $("pref").innerHTML = `<option value="">全地域</option>` + prefs.map(p => `<option ${p===cur?"selected":""}>${esc(p)}</option>`).join("");
-  const k = d?.conditions;
-  if (k) $("cond").textContent = `本命：${k.year_min}年以降・修復歴なし・全方位カメラ・ガソリン車（e-SKYACTIV X含む）・支払総額${k.main_total_price_max}万円以内・${k.main_mileage_max}万km以内　／　惜しい候補：支払総額${k.near_total_price_max}万円以内・${k.near_mileage_max}万km以内　／　地域：${k.prefs.join("・")}　／　情報元：カーセンサー`;
-  $("warn").innerHTML = (!settings.token) ? `<div class="warn">星を保存するには右上の「⚙ 設定」でGitHubのトークンを登録してください。</div>` : "";
+  if (k) $("cond").textContent = `本命：${k.year_min}年以降・修復歴なし・全方位カメラ・ガソリン車（e-SKYACTIV X含む）・支払総額${k.main_total_price_max}万円以内・${k.main_mileage_max}万km以内。惜しい候補：支払総額${k.near_total_price_max}万円以内・${k.near_mileage_max}万km以内。地域：${k.prefs.join("・")}。情報元：カーセンサー。掲載内容は必ず販売店でご確認ください。`;
+  $("warn").innerHTML = (!settings.token) ? `<div class="notice">★で車を保存するには、GitHubのトークンを登録してください。<button class="btn sm primary" data-open-settings>設定を開く</button></div>` : "";
 }
 
 // ---------- events ----------
 document.addEventListener("click", (e) => {
-  const t = e.target.closest("[data-tab]"); if (t){ state.tab = t.dataset.tab; render(); scrollToList(); return; }
+  const t = e.target.closest("[data-tab]"); if (t){ if (state.tab !== t.dataset.tab){ state.tab = t.dataset.tab; scrollToList(); render(true); } return; }
   const s = e.target.closest("[data-star]"); if (s){ e.preventDefault(); toggleStar(s.dataset.star); return; }
   const me = e.target.closest("[data-memo-edit]"); if (me){ editing.add(me.dataset.memoEdit); render();
     const ta = document.querySelector(`[data-memo-input="${CSS.escape(me.dataset.memoEdit)}"]`); ta?.focus(); return; }
   const mc = e.target.closest("[data-memo-cancel]"); if (mc){ editing.delete(mc.dataset.memoCancel); render(); return; }
   const ms = e.target.closest("[data-memo-save]"); if (ms){ saveMemo(ms.dataset.memoSave); return; }
+  if (e.target.closest("[data-open-settings]")) openSettings();
 });
 function scrollToList(){
-  const top = document.querySelector("header").offsetHeight;
-  if (window.scrollY > top) window.scrollTo({ top, behavior: "instant" });
+  // 見出し（本命・保存など）が固定バーの下に隠れない位置まで戻す
+  const top = $("list-top").getBoundingClientRect().top + window.scrollY - $("lnav").offsetHeight - 28;
+  if (window.scrollY > top) window.scrollTo({ top, behavior: reduceMotion ? "auto" : "smooth" });
 }
-$("model").onchange = () => { render(); scrollToList(); };
-$("pref").onchange = () => { render(); scrollToList(); };
-$("sort").onchange = () => { safeSet("sort", $("sort").value); render(); };
-$("settingsBtn").onclick = () => {
+$("model").onchange = () => { scrollToList(); render(true); };
+$("pref").onchange = () => { scrollToList(); render(true); };
+$("sort").onchange = () => { safeSet("sort", $("sort").value); render(true); };
+function openSettings(){
   $("repo").value = settings.repo; $("token").value = settings.token;
   $("home").innerHTML = `<option value="">未設定</option>` + Object.keys(PREF_POS).map(p => `<option ${p===homePref()?"selected":""}>${p}</option>`).join("");
   $("settings").showModal();
-};
+}
+$("settingsBtn").onclick = openSettings;
 $("cancelSettings").onclick = () => $("settings").close();
 $("saveSettings").onclick = async () => {
   safeSet("repo", $("repo").value.trim()); safeSet("token", $("token").value.trim()); safeSet("home", $("home").value);
-  if (!settings.token){ $("settings").close(); renderHeader(); render(); return; }
+  if (!settings.token){ $("settings").close(); toast("保存しました"); renderHeader(); render(); return; }
   try {
     const res = await gh("");
     if (!res.ok) throw new Error(res.status);
@@ -443,10 +650,11 @@ $("saveSettings").onclick = async () => {
   } catch(err){ toast(`接続できませんでした（${err.message}）。リポジトリ名とトークンを確認してください`, 6000); return; }
   await loadStars(); renderHeader(); render();
 };
+window.addEventListener("resize", () => moveIndicator(false));
 
-// 上部のバーが固定されたら影をつける
-new IntersectionObserver(([e]) => $("stickybar").classList.toggle("stuck", e.intersectionRatio === 0))
-  .observe(document.querySelector("header"));
+// ヒーローが画面から消えたら、上部バーに区切り線とタイトルを出す
+new IntersectionObserver(([e]) => $("lnav").classList.toggle("stuck", !e.isIntersecting), { rootMargin: "-1px 0px 0px 0px" })
+  .observe($("hero"));
 
 (async function init(){
   const s = safeGet("sort"); if (s) $("sort").value = s;
@@ -455,7 +663,7 @@ new IntersectionObserver(([e]) => $("stickybar").classList.toggle("stuck", e.int
     state.data = r.ok ? await r.json() : { cars: {} };
   } catch { state.data = { cars: {} }; }
   await loadStars();
-  renderHeader(); render();
+  renderHeader(); render(true);
 })();
 </script>
 </body>
