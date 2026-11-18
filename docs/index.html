@@ -194,7 +194,7 @@ function daysListed(c){
 
 // ---------- GitHub API (stars) ----------
 async function gh(path, opts={}){
-  const res = await fetch(`https://api.github.com/repos/${settings.repo}/${path}`, {
+  const res = await fetch(`https://api.github.com/repos/${settings.repo.trim().replace(/^\/+|\/+$/g, "")}${path ? "/" + path : ""}`, {
     ...opts,
     headers: { "Accept": "application/vnd.github+json", "Authorization": `Bearer ${settings.token}`, ...(opts.headers||{}) },
   });
