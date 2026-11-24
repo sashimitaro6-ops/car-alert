@@ -380,5 +380,473 @@
     "fetched_on": "2026-11-18"
    }
   }
+ },
+ "AU7442721681": {
+  "starred_at": "2026-11-24T02:04:49.144Z",
+  "snapshot": {
+   "id": "AU7442721681",
+   "model": "MAZDA3ファストバック",
+   "grade": "2.0 X Lパッケージ",
+   "catch": "車検整備付 BOSEサウンド 全周囲カメラ 黒革 パワーシート シート・ステアリングヒーター レーダークルーズ BSM HUD 前後ドラレコ 前後ソナー LED フルセグ ブリッツタワーバー 禁煙",
+   "total_price": 195,
+   "base_price": 184,
+   "year": 2019,
+   "mileage": 4.8,
+   "color": "灰M",
+   "pref": "大阪府",
+   "city": "八尾市",
+   "shop": "DriveStage大阪 株式会社ドライブステージ",
+   "image": "https://ccsrpcma.carsensor.net/CSphoto/bkkn/584/129/U00054584129/U00054584129_001L.JPG",
+   "photos": [
+    {
+     "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_1_001.jpg",
+     "caption": "★返品保証サービス★条件を満たした車両につきましては返品保証の対象となります。故障が不安、イメージと違った、急遽転勤で車が不要になった等々納車後50日以内のお手続きで返品可能!詳しくはスタッフまで。"
+    },
+    {
+     "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_2_001.jpg",
+     "caption": "ご来店が難しいお客様にはオンライン(TV電話)でのご対応が可能となっております♪お問い合わせは072-975-6543までお気軽にお声掛け下さい♪"
+    },
+    {
+     "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_3_001.jpg",
+     "caption": "ドライブステージのユーザー様買取車両をダイレクトに販売いたします♪業者間オークションに出品するまでの期間限定掲載♪お問い合わせは0066-9705-3189迄♪"
+    }
+   ],
+   "url": "https://www.carsensor.net/usedcar/detail/AU7442721681/index.html",
+   "body": "ハッチバック",
+   "mission": "フロアMTモード付6AT",
+   "repair": "なし",
+   "inspection": "車検整備付",
+   "warranty": "保証付",
+   "displacement": "2000CC",
+   "first_seen": "2026-11-18",
+   "price_history": [
+    {
+     "date": "2026-11-18",
+     "total": 195,
+     "base": 184
+    }
+   ],
+   "detail": {
+    "spec": {
+     "ワンオーナー": "◯",
+     "禁煙車": "◯",
+     "定期点検記録簿": "◯",
+     "修復歴": "なし",
+     "リサイクル料": "リ済込",
+     "車検": "車検残:無(購入時に新規取得)",
+     "法定整備": "法定整備付 法定24ヶ月点検整備付",
+     "保証": "保証付:販売店保証 保証期間:1ヵ月 保証距離:1,000km",
+     "色": "ポリメタルグレーメタリック",
+     "駆動方式": "2WD",
+     "ハンドル": "右",
+     "乗車定員": "5名",
+     "ドア数": "5",
+     "排気量": "2000cc",
+     "ミッション": "フロアMTモード付6AT",
+     "エンジン種別": "ハイブリッド",
+     "使用燃料": "ハイオク",
+     "WLTC燃費": "17.2km/L",
+     "車体寸法": "4460×1795×1440(mm) (全長×全幅×全高)",
+     "車両重量": "1440/-/-(kg) (AT/MT/CVT)",
+     "最小回転半径": "5.3m",
+     "発売年月": "19(R01)/12",
+     "年式(初度登録年)": "2019(R01)"
+    },
+    "fees": 11,
+    "equipment": {
+     "安全装備": [
+      "パワステ",
+      "ABS",
+      "サポカー",
+      "衝突被害軽減ブレーキ",
+      "アダプティブクルーズコントロール",
+      "レーンキープアシスト",
+      "アクセル踏み間違い(誤発進)防止装置",
+      "障害物センサー",
+      "エアバッグ:運転席/助手席/サイド/カーテン",
+      "頸部衝撃緩和ヘッドレスト",
+      "全周囲カメラ",
+      "カメラ:フロント/サイド/バック",
+      "モニター:ブラインドスポット/リアトラフィック",
+      "横滑り防止装置",
+      "アイドリングストップ",
+      "盗難防止装置",
+      "オートマチックハイビーム"
+     ],
+     "快適装備": [
+      "過給器設定モデル",
+      "エアコン・クーラー",
+      "カーナビ:メモリー他",
+      "TV:フルセグ",
+      "映像:DVD/-",
+      "オーディオ:CD/-/ミュージックサーバー",
+      "ミュージックプレイヤー接続可",
+      "ETC",
+      "ドライブレコーダー",
+      "ディスプレイオーディオ"
+     ],
+     "インテリア": [
+      "キーレス",
+      "スマートキー",
+      "パワーウインドウ",
+      "電動シート",
+      "シートヒーター",
+      "本革シート"
+     ],
+     "エクステリア": [
+      "ヘッドライト:LED、アダプティブ",
+      "アルミホイール"
+     ]
+    },
+    "photos": [
+     {
+      "url": "https://ccsrpcma.carsensor.net/CSphoto/bkkn/584/129/U00054584129/U00054584129_001L.JPG",
+      "category": "左斜前",
+      "caption": "☆アクセス誠に有難う御座います!期間限定販売ダイレクト販売!全車両お支払い総額表示にて販売中!大阪府内のお客様は表示価格以外の費用はかかりません!他府県のお客様はお気軽にご相談下さい☆"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_1_001.jpg",
+      "category": "インパネ全体",
+      "caption": "★返品保証サービス★条件を満たした車両につきましては返品保証の対象となります。故障が不安、イメージと違った、急遽転勤で車が不要になった等々納車後50日以内のお手続きで返品可能!詳しくはスタッフまで。"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_2_001.jpg",
+      "category": "右斜前",
+      "caption": "ご来店が難しいお客様にはオンライン(TV電話)でのご対応が可能となっております♪お問い合わせは072-975-6543までお気軽にお声掛け下さい♪"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_3_001.jpg",
+      "category": "右斜後",
+      "caption": "ドライブステージのユーザー様買取車両をダイレクトに販売いたします♪業者間オークションに出品するまでの期間限定掲載♪お問い合わせは0066-9705-3189迄♪"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_4_001.jpg",
+      "category": "左斜後",
+      "caption": "買取直売はメリット多数あり♪通常中古車の流通にかかるマージンを大幅にカット出来るので他社様の同年式車両と比べて魅力的な価格が実現できます♪"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_5_001.jpg",
+      "category": "窓操作部",
+      "caption": "【買得】【安心】当社はユーザー買取ないしは、お預り(委託)しての販売経路を取っております。従来のオークション仕入れによる大幅な流通のコストが掛かりません!しかも前オーナー履歴を把握しているので安心"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_6_001.jpg",
+      "category": "カーナビ",
+      "caption": "【一般店】前オーナー様⇒買取店⇒オートオークション⇒販売店⇒新しいオーナー様 【当社】前オーナー様⇒ドライブステージ⇒新しいオーナー様 この仕組みで当店では【安心】と【お得】を追及させて頂いております"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_7_001.jpg",
+      "category": "運転席操作部",
+      "caption": "☆全車当店の査定士が入庫時に試運転を含め、コンディションチェック実施済み☆"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_8_001.jpg",
+      "category": "運転席",
+      "caption": "☆心配されるエンジンやミッション、その他各機関部分作動確認済みです!事前にご連絡のうえご来店をお願い致します♪ぜひお客様の目と耳と肌でこのお車をお確かめください♪"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_9_001.jpg",
+      "category": "後部座席",
+      "caption": "☆大阪府内買取ランキング第1位獲得☆今回がお車のお乗換えで下取車があるお客様へ。下取・買取においても決して他社には負けません!! ♪査定も無料ですので併せてお気軽にお声がけ下さい!"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_10_001.jpg",
+      "category": "カーナビ",
+      "caption": "☆整備☆車検☆鈑金☆買取☆保険☆レンタカー☆リース☆その他取付作業など自動車にかかわることはすべてお任せください♪新車や中古車注文販売も承ります。"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_11_001.jpg",
+      "category": "運転席操作部",
+      "caption": "当店車両は全車両査定実施済み♪遠方のお客様にはTV電話でのご対応が可能となります。ご納得いただくまでご覧下さい♪ご来店前には在庫確認のお電話をお待ちしております♪"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_12_001.jpg",
+      "category": "カーナビ",
+      "caption": "♪当店は他府県登録&納車の実績も多数御座います♪格安でご納車させて頂きます♪全国各地からのお問い合わせをドシドシお待ちしております。保証に関しましても全国各地でご対応が可能です♪"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_13_001.jpg",
+      "category": "後部座席操作部",
+      "caption": "せっかくお電話をいただいたのに、「すみません!もう売れてしまいました!」とお答えさせていただくことがたびたび御座います。ご検討の際は1分1秒でも早くご連絡下さい!0066-9705-3189迄"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_14_001.jpg",
+      "category": "カーナビ",
+      "caption": "ローンでのお支払いをお考えのお客様にお知らせです♪頭金0円からお支払い回数は最長120回までOKです♪全国各地からFAX1つで簡単審査が行えますので、面倒な手続きも一切必要御座いません♪"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_15_001.jpg",
+      "category": "カーナビ",
+      "caption": "☆大手信販会社オートローン多数取扱いOK!月額のお支払い予算や支払い回数など、お客様にピッタリのお支払いプランをご提案させていただきます♪18歳から審査OK!お気軽にお問い合わせください☆"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_16_001.jpg",
+      "category": "カーナビ",
+      "caption": "☆電車でご来店のお客様はJR志紀駅、JR柏原駅、地下鉄八尾南駅が最寄り駅となります☆ご予約頂ければお迎えにあがる事も出来ますので、お電話いただければと思います☆0066-9705-3189迄♪"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_17_001.jpg",
+      "category": "運転席操作部",
+      "caption": "最後までご熟読いただき誠に有難う御座いました!お問い合わせは0066-9705-3189までお気軽にお声掛け下さい♪"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_18_001.jpg",
+      "category": "運転席操作部",
+      "caption": "下取り車がある方はLINE査定も実施中☆ラインID「@755pmfye」こちらまでお気軽にお問合せ下さい☆店舗在庫100台突破☆買取ランキング第1位(大阪)☆"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_19_001.jpg",
+      "category": "運転席操作部",
+      "caption": "ご来店が難しいお客様にはオンライン(TV電話)でのご対応が可能となっております♪お問い合わせは072-975-6543までお気軽にお声掛け下さい♪"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_30_001.jpg",
+      "category": "未設定",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_31_001.jpg",
+      "category": "運転席操作部",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_32_001.jpg",
+      "category": "運転席操作部",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_33_001.jpg",
+      "category": "ハンドル",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_34_001.jpg",
+      "category": "運転席",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_35_001.jpg",
+      "category": "後部座席",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_36_001.jpg",
+      "category": "インパネ全体",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_37_001.jpg",
+      "category": "運転席操作部",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_38_001.jpg",
+      "category": "運転席操作部",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_39_001.jpg",
+      "category": "トランク",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_40_001.jpg",
+      "category": "助手席",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_41_001.jpg",
+      "category": "ETC",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_42_001.jpg",
+      "category": "ライト・ランプ",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_43_001.jpg",
+      "category": "ライト・ランプ",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_44_001.jpg",
+      "category": "ミラー",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_45_001.jpg",
+      "category": "ミラー",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_46_001.jpg",
+      "category": "タイヤ・ホイール",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_47_001.jpg",
+      "category": "タイヤ・ホイール",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_48_001.jpg",
+      "category": "タイヤ・ホイール",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_49_001.jpg",
+      "category": "タイヤ・ホイール",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_50_001.jpg",
+      "category": "後部座席",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_51_001.jpg",
+      "category": "窓操作部",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_52_001.jpg",
+      "category": "シフトレバー",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_53_001.jpg",
+      "category": "シートアレンジ",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_54_001.jpg",
+      "category": "天井",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_55_001.jpg",
+      "category": "エンジンルーム",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_56_001.jpg",
+      "category": "エンジンルーム",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_57_001.jpg",
+      "category": "後",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_58_001.jpg",
+      "category": "正面",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_59_001.jpg",
+      "category": "未設定",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_60_001.jpg",
+      "category": "未設定",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_61_001.jpg",
+      "category": "その他",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_62_001.jpg",
+      "category": "その他",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_63_001.jpg",
+      "category": "その他",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_64_001.jpg",
+      "category": "その他",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_65_001.jpg",
+      "category": "その他",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_66_001.jpg",
+      "category": "その他",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_67_001.jpg",
+      "category": "その他",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_68_001.jpg",
+      "category": "その他",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_69_001.jpg",
+      "category": "その他",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_70_001.jpg",
+      "category": "その他",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_71_001.jpg",
+      "category": "その他",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_72_001.jpg",
+      "category": "その他",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_73_001.jpg",
+      "category": "その他",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_74_001.jpg",
+      "category": "その他",
+      "caption": ""
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_75_001.jpg",
+      "category": "その他",
+      "caption": "業界最多水準の保証範囲と安心の価格設定で、あなたのカーライフを強力にサポートします。全国5000工場のネットワークを持っているので、旅先での思いがけない故障やトラブル時にも安心です。"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_76_001.jpg",
+      "category": "その他",
+      "caption": "ご来店が難しいお客様にはオンライン(TV電話)でのご対応が可能となっております♪お問い合わせは072-975-6543までお気軽にお声掛け下さい♪"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_77_001.jpg",
+      "category": "その他",
+      "caption": "★返品保証サービス★条件を満たした車両につきましては返品保証の対象となります。故障が不安、イメージと違った、急遽転勤で車が不要になった等々納車後50日以内のお手続きで返品可能!詳しくはスタッフまで。"
+     },
+     {
+      "url": "https://ccsrpcml.carsensor.net/CSphoto/ml/584/129/U00054584129/U00054584129_25_001.jpg",
+      "category": "未設定",
+      "caption": "耐久性に優れるハイエンドガラスコーティング剤使用!お車の状態に応じてご提案をいたします。3D構造の緻密なガラス被膜となっており、汚れを浸透させませんので、洗車時の汚れ落ち性能は驚きです"
+     }
+    ],
+    "fetched_on": "2026-11-18"
+   }
+  }
  }
 }
